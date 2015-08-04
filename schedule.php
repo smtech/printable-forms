@@ -26,6 +26,7 @@ define('ALL_SCHOOL', 'all-school');
 define('CO_CURRICULAR', 'co-curricular');
 	define('CO_CURRICULAR_TITLE', 'Co-Curricular');
 define('FREE', 'free');
+define('SPACER', 'spacer');
 
 $COLOR_ENUM = array(RED, ORANGE, YELLOW, GREEN, BLUE, PLUM, BROWN, SM_SATURDAY, X_BLOCK);
 
@@ -137,6 +138,7 @@ $BLOCK_5 = array(
 	START => strtotime('1:45pm'),
 	END => strtotime('3:05pm')
 );
+$SPACER = array(SPACER);
 
 $i = 0; /* unique key counter */
 
@@ -168,7 +170,9 @@ $schedule = array(
 		GREEN => $BLOCK_2,
 		X_BLOCK => $MORNING_BREAK,
 		PLUM => $BLOCK_3,
+		SPACER . $i++ => $SPACER,
 		FREE . $i++ => $LUNCH,
+		SPACER . $i++ => $SPACER,
 		BROWN => array(
 			TITLE => '',
 			LOCATION => '',
@@ -238,6 +242,7 @@ $schedule = array(
 	),
 	
 	THURSDAY => array(
+		SPACER . $i++ => $SPACER,
 		CO_CURRICULAR . $i++ => array(
 			TITLE => 'Meeting Block',
 			LOCATION => '',
@@ -267,7 +272,9 @@ $schedule = array(
 		YELLOW => $BLOCK_2,
 		X_BLOCK => $MORNING_BREAK,
 		BLUE => $BLOCK_3,
+		SPACER . $i++ => $SPACER,
 		FREE . $i++ => $LUNCH,
+		SPACER . $i++ => $SPACER,
 		CO_CURRICULAR => $BLOCK_4,
 		FREE . $i++ => $PASSING_5,
 		BROWN => $BLOCK_5
@@ -502,6 +509,11 @@ if ($submission = !empty($_REQUEST)) {
 			#header input {
 				width: 95%;
 			}
+			
+			.<?= SPACER ?> {
+				height: 0px;
+				background: transparent;
+			}
 						
 			.<?= PLUM ?>.busy input, .<?= BROWN ?>.busy input, .<?= ALL_SCHOOL ?>.busy input, .<?= SM_SATURDAY ?>.busy input {
 				color: white;
@@ -695,6 +707,11 @@ if ($submission = !empty($_REQUEST)) {
 									
 									<?php foreach ($blocks as $color => $info): ?>
 									<tr>
+										<?php if (preg_match('%' . SPACER . '\d*%', $color)): ?>
+										<td class="<?= SPACER ?> block">
+											<?php if (!$submission): ?><input type="hidden" name="schedule[<?= $day ?>][<?= $color ?>]" value="<?= SPACER ?>" /><?php endif; ?>
+										</td>
+										<?php else: ?>
 										<td>
 											<div class="<?= preg_replace('%\d+%', '', $color) ?> <?= (empty($info[TITLE]) ? 'free' : 'busy') ?> block dur<?= $info[END] - $info[START] + (!$submission && !preg_match('%' . FREE . '\d*%', $color) ? 20 * 60 : 0) ?>">
 												<p class="duration">
@@ -711,6 +728,7 @@ if ($submission = !empty($_REQUEST)) {
 												</div>
 											</div>
 										</td>
+										<?php endif; ?>
 									</tr>
 									<?php endforeach; ?>
 									
