@@ -1,0 +1,13 @@
+{
+    "name": "smtech/printable-forms",
+    "description": "Easily generate printable forms for school",
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "name": "Seth Battis",
+            "email": "sethbattis@stmarksschool.org"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
