@@ -23,7 +23,7 @@
 	<style>
 		@page {
 			size: landscape;
-			margin: 1mm;
+			margin: 0;
 		}
 		
 		body, h1, h2, h3, table, th, td, input[type=text] {
