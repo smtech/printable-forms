@@ -48,7 +48,7 @@ define('DEFAULT_FOOTER', '');
  * @return string CSS height
  **/
 function height($duration) {
-	$_duration = $duration / 60 * .021;
+	$_duration = $duration / 60 * .0185;
 	return $_duration . "in";
 }
 
@@ -268,7 +268,6 @@ $schedule = array(
 		X_BLOCK => $MORNING_BREAK,
 		BLUE => $BLOCK_3,
 		FREE . $i++ => $LUNCH,
-		FREE . $i++ => $PASSING_4,
 		CO_CURRICULAR => $BLOCK_4,
 		FREE . $i++ => $PASSING_5,
 		BROWN => $BLOCK_5
@@ -322,6 +321,7 @@ $schedule[TUESDAY][ALL_SCHOOL][TITLE] = 'Chapel';
 $schedule[THURSDAY][ALL_SCHOOL][TITLE] = 'Seated Lunch';
 $schedule[THURSDAY][ALL_SCHOOL][START] = strtotime('12:25pm');
 $schedule[FRIDAY][ALL_SCHOOL][TITLE] = 'Chapel';
+$schedule[FRIDAY][CO_CURRICULAR][START] = strtotime('12:55pm');
 
 /*
  * are we processing a form submission? let's apply color block classes across
@@ -364,8 +364,6 @@ if ($submission = !empty($_REQUEST)) {
 			}
 			
 			#content {
-				width: 7.5in;
-				height: 9in;
 			}
 			
 			form {
@@ -397,6 +395,8 @@ if ($submission = !empty($_REQUEST)) {
 			
 			#wrapper {
 				position: relative;
+				width: 7.5in;
+				height: 9in;
 			}
 			
 			#header, #footer{
