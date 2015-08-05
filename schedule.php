@@ -1,12 +1,12 @@
 <?php
 
 /* days */
-define('MONDAY', 'Monday');
-define('TUESDAY', 'Tuesday');
-define('WEDNESDAY', 'Wednesday');
-define('THURSDAY', 'Thursday');
-define('FRIDAY', 'Friday');
-define('SATURDAY', 'Saturday');
+define('MONDAY', 'monday');
+define('TUESDAY', 'tuesday');
+define('WEDNESDAY', 'wednesday');
+define('THURSDAY', 'thursday');
+define('FRIDAY', 'friday');
+define('SATURDAY', 'saturday');
 
 $DAY_ENUM = array(MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY);
 
@@ -336,7 +336,12 @@ $schedule[FRIDAY][CO_CURRICULAR][START] = strtotime('12:55pm');
  * the entire schedule uniformly...
  */
 if ($submission = !empty($_REQUEST)) {
-	$schedule = $_REQUEST['schedule'];
+	$bw = true;
+	if (isset($_REQUEST[FREE_BW])) {
+		$bw = $_REQUEST[FREE_BW];
+	}
+	
+	/* apply global course settings */
 	foreach($COLOR_ENUM as $color) {
 		if(!empty($_REQUEST[$color][TITLE])) {
 			foreach($DAY_ENUM as $day) {
@@ -347,6 +352,19 @@ if ($submission = !empty($_REQUEST)) {
 						if (!empty($_REQUEST[$color][LOCATION])) {
 							$schedule[$day][$block][LOCATION] = $_REQUEST[$color][LOCATION];
 						}
+					}
+				}
+			}
+		}
+	}
+
+	/* apply individual block settings */
+	if (!empty($_REQUEST['schedule'])) {
+		foreach ($_REQUEST['schedule'] as $day => $blocks) {
+			foreach ($blocks as $color => $info) {
+				foreach ($info as $key => $value) {
+					if (!empty($value)) {
+						$schedule[$day][$color][$key] = $value;
 					}
 				}
 			}
@@ -723,7 +741,7 @@ if ($submission = !empty($_REQUEST)) {
 						<tr>
 							
 							<?php foreach ($schedule as $day => $blocks): ?>
-							<td id="<?= $day ?>" class="day">
+							<td id="<?= ucwords($day) ?>" class="day">
 								<table>
 									<tr>
 										<th><?= $day?></th>
@@ -737,7 +755,7 @@ if ($submission = !empty($_REQUEST)) {
 										</td>
 										<?php else: ?>
 										<td>
-											<div class="<?= preg_replace('%\d+%', '', $color) ?> <?= (empty($info[TITLE]) ? 'free' : 'busy') ?> <?= ($_REQUEST[FREE_BW] && !preg_match('%' . FREE . '\d*%', $color) ? FREE_BW : '') ?> block dur<?= $info[END] - $info[START] + (!$submission && !preg_match('%' . FREE . '\d*%', $color) ? 20 * 60 : 0) ?>">
+											<div class="<?= preg_replace('%\d+%', '', $color) ?> <?= (empty($info[TITLE]) ? 'free' : 'busy') ?> <?= ($bw && !preg_match('%' . FREE . '\d*%', $color) ? FREE_BW : '') ?> block dur<?= $info[END] - $info[START] + (!$submission && !preg_match('%' . FREE . '\d*%', $color) ? 20 * 60 : 0) ?>">
 												<p class="duration">
 													<?php if (preg_match('%' . FREE .'\d*%', $color)): ?><?php else: ?><?= date(TIME_FORMAT, $info[START]) ?> &ndash; <?= date(TIME_FORMAT, $info[END]) ?><?php endif; ?>
 													<?php if (!$submission): ?>
@@ -747,7 +765,7 @@ if ($submission = !empty($_REQUEST)) {
 												</p>
 	
 												<div class="details">
-													<p class="title"><?php if ($submission): ?><?= $info[TITLE] ?><?php else: ?><?php if (preg_match('%' . FREE . '\d*%', $color)): ?><input type="hidden" name="schedule[<?= $day ?>][<?= $color ?>][<?= TITLE ?>]" value="<?= $info[TITLE] ?>" /><?php else: ?><input type="text" name="schedule[<?= $day ?>][<?= $color ?>][<?= TITLE ?>]" value="<?= $info[TITLE] ?>" placeholder="<?= (preg_match('%' . X_BLOCK . '\d*%', $color) || $color == SM_SATURDAY ? ($color == SM_SATURDAY ? SM_SATURDAY_TITLE : $day . ' ' . X_BLOCK_TITLE) : $day . ' ' . ucwords(preg_replace('%\d+%', '', $color))) ?>" /><?php endif; ?><?php endif; ?></p>
+													<p class="title"><?php if ($submission): ?><?= $info[TITLE] ?><?php else: ?><?php if (preg_match('%' . FREE . '\d*%', $color)): ?><input type="hidden" name="schedule[<?= $day ?>][<?= $color ?>][<?= TITLE ?>]" value="<?= $info[TITLE] ?>" /><?php else: ?><input type="text" name="schedule[<?= $day ?>][<?= $color ?>][<?= TITLE ?>]" value="<?= $info[TITLE] ?>" placeholder="<?= (preg_match('%' . X_BLOCK . '\d*%', $color) || $color == SM_SATURDAY ? ($color == SM_SATURDAY ? SM_SATURDAY_TITLE : ucwords($day . ' ' . X_BLOCK_TITLE)) : ucwords($day . ' ' . ucwords(preg_replace('%\d+%', '', $color)))) ?>" /><?php endif; ?><?php endif; ?></p>
 													<?php if ($submission): ?><?php if (!empty($info[LOCATION])): ?><p class="location"><?= $info[LOCATION] ?></p><?php endif; ?><?php else: ?><p class="location"><?php if (preg_match('%' . FREE . '\d*%', $color)): ?><?php else: ?><input type="text" name="schedule[<?= $day ?>][<?= $color ?>][<?= LOCATION ?>]" value="<?= $info[LOCATION] ?>" placeholder="Location" /><?php endif; ?></p><?php endif; ?>
 												</div>
 											</div>
