@@ -28,7 +28,7 @@ define('CO_CURRICULAR', 'co-curricular');
 define('FREE', 'free');
 define('SPACER', 'spacer');
 
-$COLOR_ENUM = array(RED, ORANGE, YELLOW, GREEN, BLUE, PLUM, BROWN, SM_SATURDAY, X_BLOCK);
+$COLOR_ENUM = array(RED, ORANGE, YELLOW, GREEN, BLUE, PLUM, BROWN, SM_SATURDAY, X_BLOCK, CO_CURRICULAR);
 
 /* info */
 define('TITLE', 'title');
@@ -36,6 +36,7 @@ define('LOCATION', 'location');
 define('START', 'start');
 define('END', 'end');
 
+define('FREE_BW', 'bw');
 define('TIME_FORMAT', 'g:i a');
 
 define('DEFAULT_HEADER', 'Schedule');
@@ -121,7 +122,7 @@ $PASSING_4 = array(
 	END => strtotime('1:00pm')
 );
 $BLOCK_4 = array(
-	TITLE => CO_CURRICULAR_TITLE,
+	TITLE => '',
 	LOCATION => '',
 	START => strtotime('1:00pm'),
 	END => strtotime('1:40pm')
@@ -614,15 +615,30 @@ if ($submission = !empty($_REQUEST)) {
 				background: #eee;
 				color: #999;
 			}
-
+			
 			<?php foreach($COLOR_ENUM as $color): ?>
 			.<?= $color ?>.free .title::before {
-				content: "<?= ( $color == X_BLOCK || $color == SM_SATURDAY ? ($color == X_BLOCK ? X_BLOCK_TITLE : SM_SATURDAY_TITLE) : ucwords($color)) ?> ";
+				<?php
+					$label = $color;
+					switch($color) {
+						case X_BLOCK:
+							$label = X_BLOCK_TITLE;
+							break;
+						case CO_CURRICULAR:
+							$label = CO_CURRICULAR_TITLE;
+							break;
+						case SM_SATURDAY:
+							$label = SM_SATURDAY_TITLE;
+							break;
+					}
+				?>
+				content: "<?= ucwords($label) ?> ";
 			}
 			
 			form #schedule .<?= $color ?>.free .title::before{
 				content: '';
 			}
+			
 			<?php endforeach; ?>
 			
 			<?php for($i = (5 * 60); $i < (200 * 60); $i += (5 * 60)): ?>
@@ -640,6 +656,12 @@ if ($submission = !empty($_REQUEST)) {
 				margin-top: 1.5em;
 			}
 			<?php endif; ?>
+			
+			.free.<?= FREE_BW ?> {
+				border-color: black;
+				color: black;
+				background: transparent;
+			}
 			
 			<?php endfor; ?>
 		</style>
@@ -663,6 +685,8 @@ if ($submission = !empty($_REQUEST)) {
 			<div id="controls">
 				<button type="submit">Print</button>
 				<button type="reset">Reset</button>
+				<label for="<?= FREE_BW ?>-false"><input type="radio" id="<?= FREE_BW ?>-false" name="<?= FREE_BW ?>" value="0" /> Colored Free Blocks</label>
+				<label for="<?= FREE_BW ?>-true"><input type="radio" id="<?= FREE_BW ?>-true" name="<?= FREE_BW ?>" value="1" checked /> B&W Free Blocks</label>
 			</div>
 			<?php endif; ?>
 			
@@ -713,7 +737,7 @@ if ($submission = !empty($_REQUEST)) {
 										</td>
 										<?php else: ?>
 										<td>
-											<div class="<?= preg_replace('%\d+%', '', $color) ?> <?= (empty($info[TITLE]) ? 'free' : 'busy') ?> block dur<?= $info[END] - $info[START] + (!$submission && !preg_match('%' . FREE . '\d*%', $color) ? 20 * 60 : 0) ?>">
+											<div class="<?= preg_replace('%\d+%', '', $color) ?> <?= (empty($info[TITLE]) ? 'free' : 'busy') ?> <?= ($_REQUEST[FREE_BW] && !preg_match('%' . FREE . '\d*%', $color) ? FREE_BW : '') ?> block dur<?= $info[END] - $info[START] + (!$submission && !preg_match('%' . FREE . '\d*%', $color) ? 20 * 60 : 0) ?>">
 												<p class="duration">
 													<?php if (preg_match('%' . FREE .'\d*%', $color)): ?><?php else: ?><?= date(TIME_FORMAT, $info[START]) ?> &ndash; <?= date(TIME_FORMAT, $info[END]) ?><?php endif; ?>
 													<?php if (!$submission): ?>
