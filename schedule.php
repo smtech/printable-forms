@@ -36,11 +36,50 @@ define('LOCATION', 'location');
 define('START', 'start');
 define('END', 'end');
 
-define('FREE_BW', 'bw');
 define('TIME_FORMAT', 'g:i a');
+
+/* form parameters */
+define('FREE_BW', 'bw');
+define('DEFAULT_FREE_BW', true);
+define('FORM_MODE', 'mode');
+define('FORM_MODE_EDITABLE', 'edit');
+define('FORM_MODE_PRINTABLE', 'print');
+define('DEFAULT_FORM_MODE', FORM_MODE_EDITABLE);
+define('PAGE_SIZE', 'page');
+define('PAGE_SIZE_LETTER', 'letter');
+define('PAGE_SIZE_LEGAL', 'legal');
+define('DEFAULT_PAGE_SIZE', PAGE_SIZE_LETTER);
+
+/* dimensions in inches */
+define('DEFAULT_FIVE_MINUTES', 0.0185);
+define('LETTER_PAGE_HEIGHT', 11);
+define('LEGAL_PAGE_HEIGHT', 14);
+define('PAGE_WIDTH', 8.5);
+define('MARGIN', 0.5);
+define('HEADER_HEIGHT', 0.75);
+define('COLUMN_HEADER_HEIGHT', 0.25);
 
 define('DEFAULT_HEADER', 'Schedule');
 define('DEFAULT_FOOTER', '');
+
+$fiveMinutes = DEFAULT_FIVE_MINUTES; // inches, by default
+function setMinuteHeight($schedule, $pageHeight = LETTER_PAGE_HEIGHT) {
+	$maxDuration = 0;
+	foreach ($schedule as $day) {
+		$duration = 0;
+		foreach ($day as $block) {
+			$duration += ($block[END] - $block[START]);
+		}
+		if ($duration > $maxDuration) {
+			$maxDuration = $duration;
+		}
+	}
+	return ($pageHeight - (2 * MARGIN) - HEADER_HEIGHT - COLUMN_HEADER_HEIGHT) / ($maxDuration / 60);
+}
+
+function width($schedule) {
+	return (PAGE_WIDTH / count($schedule)) . "in";
+}
 
 /**
  * Calculate the CSS height of a block given a duration in seconds
@@ -49,8 +88,8 @@ define('DEFAULT_FOOTER', '');
  *
  * @return string CSS height
  **/
-function height($duration) {
-	$_duration = $duration / 60 * .0185;
+function height($duration, $unitHeight) {
+	$_duration = ($duration / 60) * $unitHeight;
 	return $_duration . "in";
 }
 
@@ -331,46 +370,47 @@ $schedule[THURSDAY][ALL_SCHOOL][START] = strtotime('12:25pm');
 $schedule[FRIDAY][ALL_SCHOOL][TITLE] = 'Chapel';
 $schedule[FRIDAY][CO_CURRICULAR][START] = strtotime('12:55pm');
 
+/* set form parameters */
+$printable = FORM_MODE_PRINTABLE == (isset($_REQUEST[FORM_MODE]) ? $_REQUEST[FORM_MODE] : DEFAULT_FORM_MODE);
+$bw = (isset($_REQUEST[FREE_BW]) ? $_REQUEST[FREE_BW] == true: DEFAULT_FREE_BW);
+$letter = PAGE_SIZE_LETTER == (isset($_REQUEST[PAGE_SIZE]) ? $_REQUEST[PAGE_SIZE]: DEFAULT_PAGE_SIZE);
+$header = (empty($_REQUEST['header']) ? DEFAULT_HEADER : $_REQUEST['header']);
+$footer = (empty($_REQUEST['footer']) ? DEFAULT_FOOTER : $_REQUEST['footer']);
+
 /*
  * are we processing a form submission? let's apply color block classes across
  * the entire schedule uniformly...
  */
-if ($submission = !empty($_REQUEST)) {
-	$bw = true;
-	if (isset($_REQUEST[FREE_BW])) {
-		$bw = $_REQUEST[FREE_BW];
-	}
-	
-	/* apply global course settings */
-	foreach($COLOR_ENUM as $color) {
-		if(!empty($_REQUEST[$color][TITLE])) {
-			foreach($DAY_ENUM as $day) {
-				$blocks = array_keys($schedule[$day]);
-				foreach ($blocks as $block) {
-					if (preg_match("%$color\d*%", $block)) {
-						$schedule[$day][$block][TITLE] = $_REQUEST[$color][TITLE];
-						if (!empty($_REQUEST[$color][LOCATION])) {
-							$schedule[$day][$block][LOCATION] = $_REQUEST[$color][LOCATION];
-						}
-					}
-				}
-			}
-		}
-	}
-
-	/* apply individual block settings */
-	if (!empty($_REQUEST['schedule'])) {
-		foreach ($_REQUEST['schedule'] as $day => $blocks) {
-			foreach ($blocks as $color => $info) {
-				foreach ($info as $key => $value) {
-					if (!empty($value)) {
-						$schedule[$day][$color][$key] = $value;
+foreach($COLOR_ENUM as $color) {
+	if(!empty($_REQUEST[$color][TITLE])) {
+		foreach($DAY_ENUM as $day) {
+			$blocks = array_keys($schedule[$day]);
+			foreach ($blocks as $block) {
+				if (preg_match("%$color\d*%", $block)) {
+					$schedule[$day][$block][TITLE] = $_REQUEST[$color][TITLE];
+					if (!empty($_REQUEST[$color][LOCATION])) {
+						$schedule[$day][$block][LOCATION] = $_REQUEST[$color][LOCATION];
 					}
 				}
 			}
 		}
 	}
 }
+
+/* apply individual block settings */
+if (!empty($_REQUEST['schedule'])) {
+	foreach ($_REQUEST['schedule'] as $day => $blocks) {
+		foreach ($blocks as $color => $info) {
+			foreach ($info as $key => $value) {
+				if (!empty($value)) {
+					$schedule[$day][$color][$key] = $value;
+				}
+			}
+		}
+	}
+}
+
+$minuteHeight = setMinuteHeight($schedule, ($letter ? LETTER_PAGE_HEIGHT : LEGAL_PAGE_HEIGHT));
 
 ?>
 <!DOCTYPE html>
@@ -379,8 +419,13 @@ if ($submission = !empty($_REQUEST)) {
 		<title>Color Schedule</title>
 		<style type="text/css">
 			@page {
-				size: portrait;
-				margin: 0.5in;
+				size: <?= PAGE_WIDTH ?>in <?= ($letter ? LETTER_PAGE_HEIGHT : LEGAL_PAGE_HEIGHT) ?>in;
+				margin: <?= MARGIN ?>in;
+			}
+			@media print {
+				#controls {
+					display: none !important;
+				}
 			}
 			body, div, p, table, td {
 				font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -388,26 +433,48 @@ if ($submission = !empty($_REQUEST)) {
 				margin: 0;
 				padding: 0;
 			}
-			
-			#content {
-			}
-			
+						
 			form {
 				padding: 2em;
 			}
 			
-			form #content {
+			#wrapper {
+				position: relative;
+			}
+		<?php if ($printable): ?>
+			#wrapper {
+				width: <?= PAGE_WIDTH ?>in;
+			}
+			<?php else: ?>
+			#wrapper {
+				width: 100%;
+				margin: 1em;
+				height: auto;
+			}
+			#content {
 				width: 100%;
 				height: auto;
 			}
+			<?php endif; ?>
 			
 			#controls {
+				display: block;
+				float: right;
 				background: #eee;
-				padding: 0.5em;
+				padding: 0.25em;
 				position: fixed;
 				top: 0;
 				right: 0;
 				z-index: 100;
+				border-radius: 0 0 0 0.5em;
+				border: 1px solid #ddd;
+			}
+			
+			#controls .section {
+				border: 1px solid #bbb;
+				padding: 0.1em 0.5em;
+				margin: 0.25em;
+				border-radius: 0.25em;
 			}
 			
 			button {
@@ -419,20 +486,23 @@ if ($submission = !empty($_REQUEST)) {
 				padding: 0;
 			}
 			
-			#wrapper {
-				position: relative;
-				width: 7.5in;
-				height: 9in;
-			}
-			
 			#header, #footer{
 				width: 100%;
 				text-align: center;
 				overflow: hidden;
 			}
 			
+			#header {
+				height: <?= HEADER_HEIGHT ?>in;
+			}
+			
 			#header, #header input {
 				font-size: 18pt;
+			}
+			
+			#header h1 {
+				margin: 0;
+				padding: 0;
 			}
 			
 			#footer {
@@ -470,7 +540,7 @@ if ($submission = !empty($_REQUEST)) {
 			}
 			
 			th {
-				padding-bottom: 1em;
+				height: <?= COLUMN_HEADER_HEIGHT ?>in;
 			}
 			
 			td {
@@ -478,13 +548,13 @@ if ($submission = !empty($_REQUEST)) {
 			}
 
 			.day {
-				width: 16%;
+				width: <?= width($schedule) ?>;
 				padding: 1em;
 			}
 			
 			.block {
 				border-radius: 3pt;
-				border: solid 1px transparent;
+				border: solid 1pt transparent;
 				overflow: visible;
 			}
 			
@@ -653,16 +723,18 @@ if ($submission = !empty($_REQUEST)) {
 				content: "<?= ucwords($label) ?> ";
 			}
 			
-			form #schedule .<?= $color ?>.free .title::before{
+			<?php if (!printable): ?>
+			#schedule .<?= $color ?>.free .title::before{
 				content: '';
 			}
+			<?php endif; ?>
 			
 			<?php endforeach; ?>
 			
 			<?php for($i = (5 * 60); $i < (200 * 60); $i += (5 * 60)): ?>
 			
 			.dur<?= $i ?> {
-				height: <?= height($i) ?>;
+				height: <?= height($i, $minuteHeight) ?>;
 			}
 			
 			<?php if ($i <= 35 * 60): ?>
@@ -670,16 +742,20 @@ if ($submission = !empty($_REQUEST)) {
 				margin-top: 0.5em;
 			}
 			
-			form .dur<?= $i ?> .details {
+			<?php if (!$printable): ?>
+			.dur<?= $i ?> .details {
 				margin-top: 1.5em;
 			}
 			<?php endif; ?>
+			<?php endif; ?>
 			
+			<?php if ($printable): ?>
 			.free.<?= FREE_BW ?> {
 				border-color: black;
 				color: black;
 				background: transparent;
 			}
+			<?php endif; ?>
 			
 			<?php endfor; ?>
 		</style>
@@ -695,20 +771,33 @@ if ($submission = !empty($_REQUEST)) {
 		
 		--></script>
 	</head>
-	<body <?php if ($submission): ?>onload="window.print();"<?php endif; ?>>
+	<body <?php if ($printable): ?>onload="window.print();"<?php endif; ?>>
 		
-		<?php if (!$submission): ?><form action="<?= $_SERVER['PHP_SELF'] ?>" method="post"><?php endif; ?>
+		<form action="<?= $_SERVER['PHP_SELF'] ?>" method="post">
 
-			<?php if (!$submission): ?>
 			<div id="controls">
-				<button type="submit">Print</button>
-				<button type="reset">Reset</button>
-				<label for="<?= FREE_BW ?>-false"><input type="radio" id="<?= FREE_BW ?>-false" name="<?= FREE_BW ?>" value="0" /> Colored Free Blocks</label>
-				<label for="<?= FREE_BW ?>-true"><input type="radio" id="<?= FREE_BW ?>-true" name="<?= FREE_BW ?>" value="1" checked /> B&W Free Blocks</label>
+				<div class="section">
+					<button type="submit" name="<?= FORM_MODE ?>" value="<?= ($printable ? FORM_MODE_EDITABLE : FORM_MODE_PRINTABLE) ?>"><?= ucwords($printable ? FORM_MODE_EDITABLE : FORM_MODE_PRINTABLE) ?></button>
+				<?php if (!$printable): ?>
+					<button type="button" onclick="window.location.href=window.location.href;">Reset</button>
+				</div>
+				<div class="section">
+					<label for="<?= FREE_BW ?>-false"><input type="radio" id="<?= FREE_BW ?>-false" name="<?= FREE_BW ?>" value="0" <?= ($bw ? '' : 'checked') ?> /> Color Free Blocks</label>
+					<label for="<?= FREE_BW ?>-true"><input type="radio" id="<?= FREE_BW ?>-true" name="<?= FREE_BW ?>" value="1" <?= ($bw ? 'checked' : '') ?> /> B&W Free Blocks</label>
+				</div>
+				<div class="section">
+					<label for="<?= PAGE_SIZE_LETTER ?>"><input type="radio" id="<?= PAGE_SIZE_LETTER ?>" name="<?= PAGE_SIZE ?>" value="<?= PAGE_SIZE_LETTER ?>" <?= ($letter ? 'checked' : '') ?> /> <?= ucwords(PAGE_SIZE_LETTER) ?></label>
+					<label for="<?= PAGE_SIZE_LEGAL ?>"><input type="radio" id="<?= PAGE_SIZE_LEGAL ?>" name="<?= PAGE_SIZE ?>" value="<?= PAGE_SIZE_LEGAL ?>" <?= ($letter ? '' : 'checked') ?> /> <?= ucwords(PAGE_SIZE_LEGAL) ?></label>
+				</div>
+				<?php else: ?>
+				<button  type="button" onclick="window.print();"><?= ucwords(FORM_MODE_PRINTABLE) ?></button>
+				<input type="hidden" name="<?= FREE_BW ?>" value="<?= $_REQUEST[FREE_BW] ?>" />
+				<input type="hidden" name="<?= PAGE_SIZE ?>" value="<?= $_REQUEST[PAGE_SIZE] ?>" />
+				</div>
+				<?php endif; ?>
 			</div>
-			<?php endif; ?>
 			
-			<?php if (!$submission): ?>
+			<?php if (!$printable): ?>
 			<div id="courses">
 				<h2>Enter courses by color</h2>
 				<ul>
@@ -723,50 +812,91 @@ if ($submission = !empty($_REQUEST)) {
 				</ul>
 				<br clear="all" />
 			</div>
-			<?php endif; ?>
+			<?php else: ?>
+				<?php foreach ($COLOR_ENUM as $color) {
+					if (!empty($_REQUEST[$color][TITLE])) {
+						?><input type="hidden" name="<?= $color ?>[<?= TITLE ?>]" value="<?= $_REQUEST[$color][TITLE] ?>" /><?php
+					}
+					if (!empty($_REQUEST[$color][LOCATION])) {
+						?><input type="hidden" name="<?= $color ?>[<?= TITLE ?>]" value="<?= $_REQUEST[$color][LOCATION] ?>" /><?php
+					}
+				} ?>
+			<?php endif;?>
 			
 			<div id="wrapper">
 				
-				<?php if (!$submission): ?><h2>Enter a title</h2><?php endif; ?>
+				<?php if (!$printable): ?><h2>Enter a title</h2><?php endif; ?>
 				
 				<header id="header">
-					<h1><?php if ($submission): ?><?= $_REQUEST['header'] ?><?php else: ?><input type="text" name="header" value="<?= DEFAULT_HEADER ?>" /><?php endif; ?></h1>
+					<h1><?php if ($printable): ?>
+							<?= $_REQUEST['header'] ?>
+							<input type="hidden" name="header" value="<?= $_REQUEST['header'] ?>" />
+						<?php else: ?>
+							<input type="text" name="header" value="<?= $header ?>" />
+						<?php endif; ?>
+					</h1>
 				</header>
 				
 				<div id="content">
 					
-					<?php if (!$submission): ?><h2>Enter individual blocks</h2><?php endif; ?>
+					<?php if (!$printable): ?><h2>Enter individual blocks</h2><?php endif; ?>
 					
 					<table id="schedule">
 						<tr>
 							
 							<?php foreach ($schedule as $day => $blocks): ?>
-							<td id="<?= ucwords($day) ?>" class="day">
+							<td id="<?= $day ?>" class="day">
 								<table>
 									<tr>
-										<th><?= $day?></th>
+										<th><?= ucwords($day) ?></th>
 									</tr>
 									
 									<?php foreach ($blocks as $color => $info): ?>
 									<tr>
 										<?php if (preg_match('%' . SPACER . '\d*%', $color)): ?>
 										<td class="<?= SPACER ?> block">
-											<?php if (!$submission): ?><input type="hidden" name="schedule[<?= $day ?>][<?= $color ?>]" value="<?= SPACER ?>" /><?php endif; ?>
+											<input type="hidden" name="schedule[<?= $day ?>][<?= $color ?>]" value="<?= SPACER ?>" />
 										</td>
 										<?php else: ?>
 										<td>
-											<div class="<?= preg_replace('%\d+%', '', $color) ?> <?= (empty($info[TITLE]) ? 'free' : 'busy') ?> <?= ($bw && !preg_match('%' . FREE . '\d*%', $color) ? FREE_BW : '') ?> block dur<?= $info[END] - $info[START] + (!$submission && !preg_match('%' . FREE . '\d*%', $color) ? 20 * 60 : 0) ?>">
+											<div class="<?= preg_replace('%\d+%', '', $color) ?> <?= (empty($info[TITLE]) ? 'free' : 'busy') ?> <?= ($bw && !preg_match('%' . FREE . '\d*%', $color) ? FREE_BW : '') ?> block dur<?= $info[END] - $info[START] + (!$printable && !preg_match('%' . FREE . '\d*%', $color) ? 20 * 60 : 0) ?>">
 												<p class="duration">
-													<?php if (preg_match('%' . FREE .'\d*%', $color)): ?><?php else: ?><?= date(TIME_FORMAT, $info[START]) ?> &ndash; <?= date(TIME_FORMAT, $info[END]) ?><?php endif; ?>
-													<?php if (!$submission): ?>
+													<?php if (preg_match('%' . FREE .'\d*%', $color)): ?>
+													<?php else: ?>
+														<?= date(TIME_FORMAT, $info[START]) ?> &ndash; <?= date(TIME_FORMAT, $info[END]) ?>
+													<?php endif; ?>
 													<input type="hidden" name="schedule[<?= $day ?>][<?= $color ?>][<?= START ?>]" value="<?= $info[START] ?>" />
 													<input type="hidden" name="schedule[<?= $day ?>][<?= $color ?>][<?= END ?>]" value="<?= $info[END] ?>" />
-													<?php endif; ?>
 												</p>
 	
 												<div class="details">
-													<p class="title"><?php if ($submission): ?><?= $info[TITLE] ?><?php else: ?><?php if (preg_match('%' . FREE . '\d*%', $color)): ?><input type="hidden" name="schedule[<?= $day ?>][<?= $color ?>][<?= TITLE ?>]" value="<?= $info[TITLE] ?>" /><?php else: ?><input type="text" name="schedule[<?= $day ?>][<?= $color ?>][<?= TITLE ?>]" value="<?= $info[TITLE] ?>" placeholder="<?= (preg_match('%' . X_BLOCK . '\d*%', $color) || $color == SM_SATURDAY ? ($color == SM_SATURDAY ? SM_SATURDAY_TITLE : ucwords($day . ' ' . X_BLOCK_TITLE)) : ucwords($day . ' ' . ucwords(preg_replace('%\d+%', '', $color)))) ?>" /><?php endif; ?><?php endif; ?></p>
-													<?php if ($submission): ?><?php if (!empty($info[LOCATION])): ?><p class="location"><?= $info[LOCATION] ?></p><?php endif; ?><?php else: ?><p class="location"><?php if (preg_match('%' . FREE . '\d*%', $color)): ?><?php else: ?><input type="text" name="schedule[<?= $day ?>][<?= $color ?>][<?= LOCATION ?>]" value="<?= $info[LOCATION] ?>" placeholder="Location" /><?php endif; ?></p><?php endif; ?>
+													<p class="title">
+														<?php if ($printable): ?>
+															<?= $info[TITLE] ?>
+															<input type="hidden" name="schedule[<?= $day ?>][<?= $color ?>][<?= TITLE ?>]" value="<?= $_REQUEST['schedule'][$day][$color][TITLE] ?>" />
+														<?php else: ?>
+															<?php if (preg_match('%' . FREE . '\d*%', $color)): ?>
+																<input type="hidden" name="schedule[<?= $day ?>][<?= $color ?>][<?= TITLE ?>]" value="<?= $info[TITLE] ?>" />
+															<?php else: ?>
+																<input type="text" name="schedule[<?= $day ?>][<?= $color ?>][<?= TITLE ?>]" value="<?= $info[TITLE] ?>" placeholder="<?= (preg_match('%' . X_BLOCK . '\d*%', $color) || $color == SM_SATURDAY ? ($color == SM_SATURDAY ? SM_SATURDAY_TITLE : ucwords($day . ' ' . X_BLOCK_TITLE)) : ucwords($day . ' ' . ucwords(preg_replace('%\d+%', '', $color)))) ?>" />
+															<?php endif; ?>
+														<?php endif; ?>
+													</p>
+													<?php if ($printable): ?>
+														<?php if (!empty($info[LOCATION])): ?>
+															<p class="location">
+																<?= $info[LOCATION] ?>
+																<input type="hidden" name="schedule[<?= $day ?>][<?= $color ?>][<?= LOCATION ?>]" value="<?= $_REQUEST['schedule'][$day][$color][LOCATION] ?>" />
+															</p>
+														<?php endif; ?>
+													<?php else: ?>
+														<p class="location">
+															<?php if (preg_match('%' . FREE . '\d*%', $color)): ?>
+															<?php else: ?>
+																<input type="text" name="schedule[<?= $day ?>][<?= $color ?>][<?= LOCATION ?>]" value="<?= $info[LOCATION] ?>" placeholder="Location" />
+															<?php endif; ?>
+														</p>
+													<?php endif; ?>
 												</div>
 											</div>
 										</td>
@@ -783,12 +913,18 @@ if ($submission = !empty($_REQUEST)) {
 					
 				</div>
 				
-				<?php if (!$submission): ?><h2>Enter a note for the bottom of the schedule</h2><?php endif; ?>
+				<?php if (!$printable): ?><h2>Enter a note for the bottom of the schedule</h2><?php endif; ?>
 				
 				<footer id="footer">
-					<p><?php if ($submission): ?><?= $_REQUEST['footer'] ?><?php else: ?><textarea type="text" name="footer"><?= DEFAULT_FOOTER ?></textarea><?php endif; ?></p>
+					<p><?php if ($printable): ?>
+							<?= $_REQUEST['footer'] ?>
+							<input type="hidden" name="footer" value="<?= $_REQUEST['footer'] ?>" />
+						<?php else: ?>
+							<textarea type="text" name="footer"><?= $footer ?></textarea>
+						<?php endif; ?>
+					</p>
 				</footer>
 			</div>
-		<?php if (!$submission): ?></form><?php endif; ?>
+		</form>
 	</body>
 </html>
