@@ -1,5 +1,9 @@
 <?php
 
+require_once('vendor/autoload.php');
+
+use smtech\stmarks_colors\StMarksColors as col;
+
 /* days */
 define('MONDAY', 'monday');
 define('TUESDAY', 'tuesday');
@@ -11,13 +15,13 @@ define('SATURDAY', 'saturday');
 $DAY_ENUM = array(MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY);
 
 /* color blocks */
-define('RED', 'red');
-define('ORANGE', 'orange');
-define('YELLOW', 'yellow');
-define('GREEN', 'green');
-define('BLUE', 'blue');
-define('PLUM', 'plum');
-define('BROWN', 'brown');
+define('RED', col::RED_BLOCK);
+define('ORANGE', col::ORANGE_BLOCK);
+define('YELLOW', col::YELLOW_BLOCK);
+define('GREEN', col::GREEN_BLOCK);
+define('BLUE', col::BLUE_BLOCK);
+define('PLUM', col::PLUM_BLOCK);
+define('BROWN', col::BROWN_BLOCK);
 define('X_BLOCK', 'x-block');
 	define('X_BLOCK_TITLE', 'X Block');
 define('SM_SATURDAY', 'sm-saturday');
@@ -28,6 +32,7 @@ define('CO_CURRICULAR', 'co-curricular');
 define('FREE', 'free');
 define('SPACER', 'spacer');
 
+$COLOR_BLOCKS_ENUM = array(RED, ORANGE, YELLOW, GREEN, BLUE, PLUM, BROWN);
 $COLOR_ENUM = array(RED, ORANGE, YELLOW, GREEN, BLUE, PLUM, BROWN, SM_SATURDAY, X_BLOCK, CO_CURRICULAR);
 
 /* info */
@@ -36,6 +41,7 @@ define('LOCATION', 'location');
 define('START', 'start');
 define('END', 'end');
 
+date_default_timezone_set('America/New_York');
 define('TIME_FORMAT', 'g:i a');
 
 /* form parameters */
@@ -604,77 +610,23 @@ $minuteHeight = setMinuteHeight($schedule, ($letter ? LETTER_PAGE_HEIGHT : LEGAL
 				background: transparent;
 			}
 						
-			.<?= PLUM ?>.busy input, .<?= BROWN ?>.busy input, .<?= ALL_SCHOOL ?>.busy input, .<?= SM_SATURDAY ?>.busy input {
-				color: white;
+			<?php foreach($COLOR_BLOCKS_ENUM as $color): ?>
+			.<?= $color ?>.busy {
+				background: <?= col::get($color) ?>;
+				color: <?= col::get($color)->text() ?>;
 			}
 			
-			.<?= RED ?>.busy {
-				background: #f66;
+			.<?= $color ?>.free {
+				background: <?= col::get($color)->light() ?>;
+				color: <?= col::get($color)->dark() ?>;
+				border-color: <?= col::get($color)->dark() ?>;
 			}
 			
-			.<?= RED ?>.free {
-				background: white /*#fdd*/;
-				color: #f99;
-				border-color: #f99;
+			.<?= $color ?>.busy input {
+				color: <?= col::get($color)->text() ?>;
 			}
+			<?php endforeach; ?>
 			
-			.<?= ORANGE ?>.busy {
-				background: #fa6;
-			}
-			
-			.<?= ORANGE ?>.free {
-				background: white /*#fed*/;
-				color: #fb9;
-				border-color: #fb9;
-			}
-			
-			.<?= YELLOW ?>.busy {
-				background: #ff0;
-			}
-			
-			.<?= YELLOW ?>.free {
-				background: white /*#ffd*/;
-				color: #dd0;
-				border-color: #dd0;
-			}
-			.<?= GREEN ?>.busy {
-				background: #6f3;
-			}
-			
-			.<?= GREEN ?>.free {
-				background: white /*#dfd*/;
-				color: #9d9;
-				border-color: #9d9;
-			}
-			.<?= BLUE ?>.busy {
-				background: #69f;
-			}
-			
-			.<?= BLUE ?>.free {
-				background: white /*#def*/;
-				color: #69f;
-				border-color: #69f;
-			}
-			.<?= PLUM ?>.busy {
-				background: #93f;
-				color: white;
-			}
-			
-			.<?= PLUM ?>.free {
-				background: white/*#edf*/;
-				color: #c9f;
-				border-color: #c9f;
-			}
-			.<?= BROWN ?>.busy {
-				background: #970;
-				color: white;
-			}
-			
-			.<?= BROWN ?>.free {
-				background: /*#eda*/;
-				color: #db3;
-				border-color: #db3;
-			}
 			
 			.<?= X_BLOCK ?> .title, .<?= X_BLOCK ?> .location, .<?= ALL_SCHOOL ?> .title, .<?= ALL_SCHOOL ?> .location {
 				font-size: 8pt;
@@ -685,14 +637,18 @@ $minuteHeight = setMinuteHeight($schedule, ($letter ? LETTER_PAGE_HEIGHT : LEGAL
 			}
 			
 			.<?= ALL_SCHOOL ?>.busy, .<?= SM_SATURDAY ?>.busy {
-				background: #003359;
-				color: white;
+				background: <?= col::get(col::STMARKS_BLUE) ?>;
+				color: <?= col::get(col::STMARKS_BLUE)->text() ?>;
 			}
 			
 			.<?= ALL_SCHOOL ?>.free, .<?= SM_SATURDAY ?>.free {
-				background: white;
-				color: #93d1ff;
-				border-color: #003359;
+				background: <?= col::get(col::STMARKS_BLUE)->light() ?>;
+				color: <?= col::get(col::STMARKS_BLUE)->dark() ?>;
+				border-color: <?= col::get(col::STMARKS_BLUE)->dark() ?>;
+			}
+			
+			.<?= ALL_SCHOOL ?>.busy input, .<?= SM_SATURDAY ?>.busy input {
+				color: <?= col::get(col::STMARKS_BLUE)->text()?>;
 			}
 			
 			.<?= X_BLOCK ?>.busy, .<?= CO_CURRICULAR ?>.busy {
