@@ -33,7 +33,7 @@ define('FREE', 'free');
 define('SPACER', 'spacer');
 
 $COLOR_BLOCKS_ENUM = array(RED, ORANGE, YELLOW, GREEN, BLUE, PLUM, BROWN);
-$COLOR_ENUM = array(RED, ORANGE, YELLOW, GREEN, BLUE, PLUM, BROWN, SM_SATURDAY, X_BLOCK, CO_CURRICULAR);
+$COLOR_ENUM = array(RED, ORANGE, YELLOW, GREEN, BLUE, PLUM, BROWN);
 
 /* info */
 define('TITLE', 'title');
@@ -393,9 +393,14 @@ foreach($COLOR_ENUM as $color) {
 			$blocks = array_keys($schedule[$day]);
 			foreach ($blocks as $block) {
 				if (preg_match("%$color\d*%", $block)) {
-					$schedule[$day][$block][TITLE] = $_REQUEST[$color][TITLE];
-					if (!empty($_REQUEST[$color][LOCATION])) {
-						$schedule[$day][$block][LOCATION] = $_REQUEST[$color][LOCATION];
+					if ($printable) {
+						$schedule[$day][$block][TITLE] = $_REQUEST[$color][TITLE];
+						if (!empty($_REQUEST[$color][LOCATION])) {
+							$schedule[$day][$block][LOCATION] = $_REQUEST[$color][LOCATION];
+						}
+					} else {
+						$schedule[$day][$block][TITLE] = '';
+						$schedule[$day][$block][LOCATION] = '';
 					}
 				}
 			}
@@ -723,7 +728,7 @@ $minuteHeight = setMinuteHeight($schedule, ($letter ? LETTER_PAGE_HEIGHT : LEGAL
 		
 		--></script>
 	</head>
-	<body <?php if ($printable): ?>onload="window.print();"<?php endif; ?>>
+	<body <?php if ($printable): ?>onload="window.print();"<?php else: ?> onload="<?php foreach ($COLOR_ENUM as $color): ?>toggleFreeBusy('<?= $color ?>'); <?php endforeach; ?>"<?php endif; ?>>
 		
 		<form action="<?= $_SERVER['PHP_SELF'] ?>" method="post">
 
@@ -743,8 +748,8 @@ $minuteHeight = setMinuteHeight($schedule, ($letter ? LETTER_PAGE_HEIGHT : LEGAL
 				</div>
 				<?php else: ?>
 				<button  type="button" onclick="window.print();"><?= ucwords(FORM_MODE_PRINTABLE) ?></button>
-				<input type="hidden" name="<?= FREE_BW ?>" value="<?= $_REQUEST[FREE_BW] ?>" />
-				<input type="hidden" name="<?= PAGE_SIZE ?>" value="<?= $_REQUEST[PAGE_SIZE] ?>" />
+				<input type="hidden" name="<?= FREE_BW ?>" value="<?= ($bw ? 1 : 0) ?>" />
+				<input type="hidden" name="<?= PAGE_SIZE ?>" value="<?= ($letter ? PAGE_SIZE_LETTER : PAGE_SIZE_LEGAL) ?>" />
 				</div>
 				<?php endif; ?>
 			</div>
@@ -756,9 +761,9 @@ $minuteHeight = setMinuteHeight($schedule, ($letter ? LETTER_PAGE_HEIGHT : LEGAL
 					<?php foreach($COLOR_ENUM as $color): ?>
 					<li class="<?= $color ?> free block" id="<?= $color ?>">
 						<span class="title">
-							<input name="<?= $color ?>[<?= TITLE ?>]" id="<?= $color ?>-title" type="text" placeholder="Course" onblur="toggleFreeBusy('<?= $color ?>');" />
+							<input name="<?= $color ?>[<?= TITLE ?>]" id="<?= $color ?>-title" type="text" placeholder="<?= ucwords($color) ?> Course" value="<?= $_REQUEST[$color][TITLE] ?>" onblur="toggleFreeBusy('<?= $color ?>');" onload="toggleFreeBusy('<?= $color ?>');" />
 						</span>
-						<input name="<?= $color ?>[<?= LOCATION ?>]" type="text" placeholder="Location" />
+						<input name="<?= $color ?>[<?= LOCATION ?>]" type="text" value="<?= $_REQUEST[$color][LOCATION] ?>" placeholder="Location" />
 					</li>
 					<?php endforeach; ?>
 				</ul>
@@ -770,7 +775,7 @@ $minuteHeight = setMinuteHeight($schedule, ($letter ? LETTER_PAGE_HEIGHT : LEGAL
 						?><input type="hidden" name="<?= $color ?>[<?= TITLE ?>]" value="<?= $_REQUEST[$color][TITLE] ?>" /><?php
 					}
 					if (!empty($_REQUEST[$color][LOCATION])) {
-						?><input type="hidden" name="<?= $color ?>[<?= TITLE ?>]" value="<?= $_REQUEST[$color][LOCATION] ?>" /><?php
+						?><input type="hidden" name="<?= $color ?>[<?= LOCATION ?>]" value="<?= $_REQUEST[$color][LOCATION] ?>" /><?php
 					}
 				} ?>
 			<?php endif;?>
@@ -825,7 +830,7 @@ $minuteHeight = setMinuteHeight($schedule, ($letter ? LETTER_PAGE_HEIGHT : LEGAL
 													<p class="title">
 														<?php if ($printable): ?>
 															<?= $info[TITLE] ?>
-															<input type="hidden" name="schedule[<?= $day ?>][<?= $color ?>][<?= TITLE ?>]" value="<?= $_REQUEST['schedule'][$day][$color][TITLE] ?>" />
+															<input type="hidden" name="schedule[<?= $day ?>][<?= $color ?>][<?= TITLE ?>]" value="<?= $_REQUEST['schedule'][$day][$color][TITLE] ?>" />	
 														<?php else: ?>
 															<?php if (preg_match('%' . FREE . '\d*%', $color)): ?>
 																<input type="hidden" name="schedule[<?= $day ?>][<?= $color ?>][<?= TITLE ?>]" value="<?= $info[TITLE] ?>" />
