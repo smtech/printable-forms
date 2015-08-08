@@ -84,7 +84,7 @@ function setMinuteHeight($schedule, $pageHeight = LETTER_PAGE_HEIGHT) {
 }
 
 function width($schedule) {
-	return (PAGE_WIDTH / count($schedule)) . "in";
+	return (100 / count($schedule)) . "%";
 }
 
 /**
@@ -578,8 +578,7 @@ $minuteHeight = setMinuteHeight($schedule, ($letter ? LETTER_PAGE_HEIGHT : LEGAL
 			}
 			
 			.location {
-				font-size: 10pt;
-				font-style: italic;
+				font-size: 8pt;
 			}
 			
 			.duration {
