@@ -414,6 +414,11 @@ if (!empty($_REQUEST['schedule'])) {
 		foreach ($blocks as $color => $info) {
 			foreach ($info as $key => $value) {
 				if (!empty($value)) {
+					if ($key == START || $key == END){
+						if (preg_match('/[^0-9]/i', $value)) {
+							$value = strtotime($value);
+						}
+					}
 					$schedule[$day][$color][$key] = $value;
 				}
 			}
