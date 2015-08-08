@@ -2,7 +2,7 @@
 
 require_once('vendor/autoload.php');
 
-use smtech\stmarks_colors\StMarksColors as col;
+use smtech\StMarksColors as col;
 
 /* days */
 define('MONDAY', 'monday');
@@ -660,6 +660,7 @@ $minuteHeight = setMinuteHeight($schedule, ($letter ? LETTER_PAGE_HEIGHT : LEGAL
 				color: #999;
 			}
 			
+			<?php if ($printable): ?>
 			<?php foreach($COLOR_ENUM as $color): ?>
 			.<?= $color ?>.free .title::before {
 				<?php
@@ -678,14 +679,8 @@ $minuteHeight = setMinuteHeight($schedule, ($letter ? LETTER_PAGE_HEIGHT : LEGAL
 				?>
 				content: "<?= ucwords($label) ?> ";
 			}
-			
-			<?php if (!printable): ?>
-			#schedule .<?= $color ?>.free .title::before{
-				content: '';
-			}
-			<?php endif; ?>
-			
 			<?php endforeach; ?>
+			<?php endif; ?>
 			
 			<?php for($i = (5 * 60); $i < (200 * 60); $i += (5 * 60)): ?>
 			
@@ -717,11 +712,13 @@ $minuteHeight = setMinuteHeight($schedule, ($letter ? LETTER_PAGE_HEIGHT : LEGAL
 		</style>
 		<script type="text/javascript"><!--
 		
-		function toggleFreeBusy(color) {
-			if (document.getElementById(color).children[0].children[0].value.length > 0) {
-				document.getElementById(color).className = color + ' busy block';
+		function toggleFreeBusy(id) {
+			if (document.getElementById(id + '-title').value.length > 0) {
+				document.getElementById(id).classList.remove('free');
+				document.getElementById(id).classList.add('busy');
 			} else {
-				document.getElementById(color).className = color + ' free block';
+				document.getElementById(id).classList.remove('busy');
+				document.getElementById(id).classList.add('free');
 			}
 		}
 		
@@ -760,7 +757,7 @@ $minuteHeight = setMinuteHeight($schedule, ($letter ? LETTER_PAGE_HEIGHT : LEGAL
 					<?php foreach($COLOR_ENUM as $color): ?>
 					<li class="<?= $color ?> free block" id="<?= $color ?>">
 						<span class="title">
-							<input name="<?= $color ?>[<?= TITLE ?>]" type="text" placeholder="Course" onblur="toggleFreeBusy('<?= $color ?>');" />
+							<input name="<?= $color ?>[<?= TITLE ?>]" id="<?= $color ?>-title" type="text" placeholder="Course" onblur="toggleFreeBusy('<?= $color ?>');" />
 						</span>
 						<input name="<?= $color ?>[<?= LOCATION ?>]" type="text" placeholder="Location" />
 					</li>
@@ -815,7 +812,7 @@ $minuteHeight = setMinuteHeight($schedule, ($letter ? LETTER_PAGE_HEIGHT : LEGAL
 										</td>
 										<?php else: ?>
 										<td>
-											<div class="<?= preg_replace('%\d+%', '', $color) ?> <?= (empty($info[TITLE]) ? 'free' : 'busy') ?> <?= ($bw && !preg_match('%' . FREE . '\d*%', $color) ? FREE_BW : '') ?> block dur<?= $info[END] - $info[START] + (!$printable && !preg_match('%' . FREE . '\d*%', $color) ? 20 * 60 : 0) ?>">
+											<div class="<?= preg_replace('%\d+%', '', $color) ?> <?= (empty($info[TITLE]) ? 'free' : 'busy') ?> <?= ($bw && !preg_match('%' . FREE . '\d*%', $color) ? FREE_BW : '') ?> block dur<?= $info[END] - $info[START] + (!$printable && !preg_match('%' . FREE . '\d*%', $color) ? 20 * 60 : 0) ?>" id="<?= "$day-$color" ?>">
 												<p class="duration">
 													<?php if (preg_match('%' . FREE .'\d*%', $color)): ?>
 													<?php else: ?>
@@ -834,7 +831,7 @@ $minuteHeight = setMinuteHeight($schedule, ($letter ? LETTER_PAGE_HEIGHT : LEGAL
 															<?php if (preg_match('%' . FREE . '\d*%', $color)): ?>
 																<input type="hidden" name="schedule[<?= $day ?>][<?= $color ?>][<?= TITLE ?>]" value="<?= $info[TITLE] ?>" />
 															<?php else: ?>
-																<input type="text" name="schedule[<?= $day ?>][<?= $color ?>][<?= TITLE ?>]" value="<?= $info[TITLE] ?>" placeholder="<?= (preg_match('%' . X_BLOCK . '\d*%', $color) || $color == SM_SATURDAY ? ($color == SM_SATURDAY ? SM_SATURDAY_TITLE : ucwords($day . ' ' . X_BLOCK_TITLE)) : ucwords($day . ' ' . ucwords(preg_replace('%\d+%', '', $color)))) ?>" />
+																<input type="text" name="schedule[<?= $day ?>][<?= $color ?>][<?= TITLE ?>]" id="<?= "$day-$color" ?>-title" value="<?= $info[TITLE] ?>" placeholder="<?= (preg_match('%' . X_BLOCK . '\d*%', $color) || $color == SM_SATURDAY ? ($color == SM_SATURDAY ? SM_SATURDAY_TITLE : ucwords($day . ' ' . X_BLOCK_TITLE)) : ucwords($day . ' ' . ucwords(preg_replace('%\d+%', '', $color)))) ?>" onblur="toggleFreeBusy('<?= "$day-$color" ?>');" onload="toggleFreeBusy('<?= "$day-$color" ?>');" />
 															<?php endif; ?>
 														<?php endif; ?>
 													</p>

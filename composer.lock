@@ -12,19 +12,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/smtech/stmarks-colors.git",
-                "reference": "29f6def3d194313744621397aa5946f7ff31cbdf"
+                "reference": "978be1b0f711d0ab03f7ce15cfafddce60b12676"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/smtech/stmarks-colors/zipball/29f6def3d194313744621397aa5946f7ff31cbdf",
-                "reference": "29f6def3d194313744621397aa5946f7ff31cbdf",
+                "url": "https://api.github.com/repos/smtech/stmarks-colors/zipball/978be1b0f711d0ab03f7ce15cfafddce60b12676",
+                "reference": "978be1b0f711d0ab03f7ce15cfafddce60b12676",
                 "shasum": ""
             },
             "type": "library",
             "autoload": {
-                "classmap": [
-                    ""
-                ]
+                "psr-4": {
+                    "smtech\\": ""
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -37,7 +37,7 @@
                 }
             ],
             "description": "An object-ified, consistent set of hex colors for St. Mark’s projects",
-            "time": "2015-08-07 19:19:38"
+            "time": "2015-08-08 01:30:39"
         }
     ],
     "packages-dev": [],
