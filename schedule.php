@@ -614,6 +614,17 @@ $minuteHeight = setMinuteHeight($schedule, ($letter ? LETTER_PAGE_HEIGHT : LEGAL
 				width: 95%;
 			}
 			
+			#link {
+				position: absolute;
+				bottom: 0;
+				right: 0;
+				overflow: hidden;
+				width: 100;
+				text-align: right;
+				font-size: 6pt;
+				color: #aaa;
+			}
+			
 			.<?= SPACER ?> {
 				height: 0px;
 				background: transparent;
@@ -873,6 +884,8 @@ $minuteHeight = setMinuteHeight($schedule, ($letter ? LETTER_PAGE_HEIGHT : LEGAL
 						</tr>
 					</table>
 					
+				<div id="link">http://j.mp/color-schedule</div>
+
 				</div>
 				
 				<?php if (!$printable): ?><h2>Enter a note for the bottom of the schedule</h2><?php endif; ?>
