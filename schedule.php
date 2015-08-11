@@ -744,7 +744,7 @@ $minuteHeight = setMinuteHeight($schedule, ($letter ? LETTER_PAGE_HEIGHT : LEGAL
 		
 		--></script>
 	</head>
-	<body <?php if ($printable): ?>onload="window.print();"<?php else: ?> onload="<?php foreach ($COLOR_ENUM as $color): ?>toggleFreeBusy('<?= $color ?>'); <?php endforeach; ?>"<?php endif; ?>>
+	<body <?php if ($printable): ?><?php else: ?> onload="<?php foreach ($COLOR_ENUM as $color): ?>toggleFreeBusy('<?= $color ?>'); <?php endforeach; ?>"<?php endif; ?>>
 		
 		<form action="<?= $_SERVER['PHP_SELF'] ?>" method="post">
 
