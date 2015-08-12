@@ -103,8 +103,8 @@ span.marker, td h1 {
 
 span.marker::before {
 	content: '\2713';
-	padding: 0.3em 0.5em;
-	background: #ffc;
+	padding: 0.2em 0.4em;
+	color: white;
+	background: black;
 	border-radius: 1em;
-	border: solid 1px yellow;
 }
