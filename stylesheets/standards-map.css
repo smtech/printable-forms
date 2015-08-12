@@ -1,0 +1,110 @@
+body {
+	font-family: sans-serif;
+	font-size: 10pt;
+	margin: 0;
+	padding: 0;
+}
+
+#content {
+	width: 100%;
+	margin: 0;
+}
+
+#content td, #content th {
+	font-size: 10pt;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+thead th:nth-child(even) {
+	background: #ffc;
+}
+
+tr:nth-child(odd).standards-group.odd {
+	background: #fee;
+}
+
+tr:nth-child(odd).standards-group.odd td:nth-child(even) {
+	background: #ffe;
+}
+
+tr:nth-child(even).standards-group.odd {
+	background: #edd;
+}
+
+tr:nth-child(even).standards-group.odd td:nth-child(even) {
+	background: #eed;
+}
+
+tr:nth-child(odd).standards-group.even {
+	background: #eef;
+}
+
+tr:nth-child(odd).standards-group.even td:nth-child(even){
+	background: #eff;
+}
+
+tr:nth-child(even).standards-group.even {
+	background: #dde;
+}
+
+tr:nth-child(even).standards-group.even td:nth-child(even){
+	background: #dee;
+}
+
+tr.head {
+	border-top: solid 1px black;
+}
+
+td, th {
+	padding: 0.5em;
+}
+
+th {
+	text-align: left;
+	font-weight: normal;
+}
+
+td {
+	text-align: center;
+}
+
+.standard {
+	text-indent: -2.5em;
+	margin-left: 2.5em;
+}
+
+.standard .code {
+	color: #999;
+	font-size: smaller;
+}
+
+.head .standard .description::before {
+	content: '\00a0';
+	padding-left: 0.4em;
+}
+
+.head .standard .description {
+	font-weight: bold;
+	font-size: larger;
+}
+
+h1 {
+	margin: 0;
+}
+
+span.marker, td h1 {
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+span.marker::before {
+	content: '\2713';
+	padding: 0.3em 0.5em;
+	background: #ffc;
+	border-radius: 1em;
+	border: solid 1px yellow;
+}

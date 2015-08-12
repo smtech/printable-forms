@@ -4,8 +4,63 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "36dfa38feec6dc4d9ff08fa6a344f37a",
+    "hash": "94ddda3e516e2540a7ab6edf2e462309",
     "packages": [
+        {
+            "name": "smarty/smarty",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/smarty-php/smarty.git",
+                "reference": "643e6784e8d07154e88eff1ea43b2cd66a6051ae"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/smarty-php/smarty/zipball/643e6784e8d07154e88eff1ea43b2cd66a6051ae",
+                "reference": "643e6784e8d07154e88eff1ea43b2cd66a6051ae",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.1.x-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "libs/Smarty.class.php",
+                    "libs/SmartyBC.class.php",
+                    "libs/sysplugins/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Monte Ohrt",
+                    "email": "monte@ohrt.com"
+                },
+                {
+                    "name": "Uwe Tews",
+                    "email": "uwe.tews@googlemail.com"
+                },
+                {
+                    "name": "Rodney Rehm",
+                    "email": "rodney.rehm@medialize.de"
+                }
+            ],
+            "description": "Smarty - the compiling PHP template engine",
+            "homepage": "http://www.smarty.net",
+            "keywords": [
+                "templating"
+            ],
+            "time": "2015-08-06 19:42:20"
+        },
         {
             "name": "smtech/stmarks-colors",
             "version": "dev-master",
@@ -38,13 +93,51 @@
             ],
             "description": "An object-ified, consistent set of hex colors for St. Mark’s projects",
             "time": "2015-08-08 01:30:39"
+        },
+        {
+            "name": "smtech/stmarkssmarty",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/smtech/stmarkssmarty.git",
+                "reference": "da58710978039498054117bcbd24734e2bda4b54"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/smtech/stmarkssmarty/zipball/da58710978039498054117bcbd24734e2bda4b54",
+                "reference": "da58710978039498054117bcbd24734e2bda4b54",
+                "shasum": ""
+            },
+            "require": {
+                "smarty/smarty": "3.1.*",
+                "smtech/stmarks-colors": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    ""
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Seth Battis",
+                    "email": "sethbattis@stmarksschool.org"
+                }
+            ],
+            "description": "A standard Smarty install for St. Mark's projects",
+            "time": "2015-08-08 01:47:07"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "smtech/stmarks-colors": 20
+        "smtech/stmarks-colors": 20,
+        "smtech/stmarkssmarty": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

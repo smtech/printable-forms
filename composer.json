@@ -10,6 +10,7 @@
     ],
     "minimum-stability": "dev",
     "require": {
-	    "smtech/stmarks-colors": "dev-master"
+	    "smtech/stmarks-colors": "dev-master",
+	    "smtech/stmarkssmarty": "dev-master"
     }
 }
