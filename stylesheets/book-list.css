@@ -1,0 +1,124 @@
+@page {
+	size: letter;
+	margin: 1in;
+}
+
+@media print {
+	.section {
+		page-break-after: always;
+	}
+}
+
+@media screen {
+	.section {
+		margin: 1in;
+	}
+}
+
+body, td, th {
+	margin: 0;
+	padding: 0;
+	font-family: "Adobe Garamond Pro", Garamond, "Serif";
+	font-size: 10pt;
+}
+
+.wrapper {
+	position: relative;
+	margin: 0;
+	padding: 0;
+	width: 8.5in;
+}
+
+.section {
+	position: relative;
+	top: 0;
+	left: 0;
+	width: 8in;
+	overflow: hidden;
+}
+
+.metadata {
+	margin-bottom: 0.5in;
+}
+
+.name {
+	font-size: 18pt;
+	font-weight: bold;
+}
+
+.id {
+	position: absolute;
+	top: 0;
+	right: 0;
+	font-size: 18pt;
+}
+
+.teacher {
+	font-size: 18pt;
+	font-style: italic;
+}
+
+.metadata .count {
+	display: inline-block;
+}
+
+.metadata .count.students::before {
+	content: ' / ';
+}
+
+.instructions {
+	margin-bottom: 0.5in;
+}
+
+th {
+	text-align: left;
+}
+
+table {
+	border-collapse: separate;
+	border-spacing: 0;
+	empty-cells: hide;
+	max-width: 100%;
+	border-bottom: solid 1px black;
+	border-right: solid 1px black;
+}
+
+th {
+	font-weight: normal;
+}
+
+td, th {
+	border-top: solid 1px black;
+	border-left: solid 1px black;
+	margin: 0;
+	padding: 0.25em;
+}
+
+th.book {
+	max-width: 1in;
+	vertical-align: bottom;
+	font-size: 9pt;
+}
+
+th.student, th.count {
+	white-space: nowrap;
+}
+
+td.count {
+	border-top: solid 2px black;
+	border-left: solid 2px black;
+	border-right: solid 1px black;
+	border-bottom: solid 1px black;
+}
+
+td.initial {
+	min-width: 0.5in;
+	width: 1in;
+	height: 0.33in;
+}
+
+.initials {
+	position: absolute;
+	top: 0.5in;
+	right: 0;
+}

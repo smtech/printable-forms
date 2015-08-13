@@ -11,6 +11,8 @@
     "minimum-stability": "dev",
     "require": {
 	    "smtech/stmarks-colors": "dev-master",
-	    "smtech/stmarkssmarty": "dev-master"
+	    "smtech/stmarkssmarty": "dev-master",
+	    "battis/simplecache": "~1.0",
+	    "ext-tidy": "~2.0"
     }
 }
