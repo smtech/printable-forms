@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "battis/simplecache",
-            "version": "v1.0.1",
+            "version": "v1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/battis/simplecache.git",
-                "reference": "919dd3ea4b44883ca9cfbbb14b0fefd24039959b"
+                "reference": "0cb75651240fe0d3037ad8557f6a4fbc35bc8e71"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/battis/simplecache/zipball/919dd3ea4b44883ca9cfbbb14b0fefd24039959b",
-                "reference": "919dd3ea4b44883ca9cfbbb14b0fefd24039959b",
+                "url": "https://api.github.com/repos/battis/simplecache/zipball/0cb75651240fe0d3037ad8557f6a4fbc35bc8e71",
+                "reference": "0cb75651240fe0d3037ad8557f6a4fbc35bc8e71",
                 "shasum": ""
             },
             "type": "library",
@@ -37,7 +37,7 @@
                 }
             ],
             "description": "Manage a simple cache backed by a MySQL database",
-            "time": "2015-08-12 19:47:05"
+            "time": "2015-08-13 19:32:36"
         },
         {
             "name": "smarty/smarty",

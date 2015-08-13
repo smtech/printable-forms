@@ -10,6 +10,12 @@ body {
 	margin: 0;
 }
 
+@media screen {
+	#content {
+		margin: 1em;
+	}
+}
+
 #content td, #content th {
 	font-size: 10pt;
 }
@@ -82,7 +88,7 @@ td {
 }
 
 .head .standard .description::before {
-	content: '\00a0';
+	content: '\00a0'; /* &nbsp; */
 	padding-left: 0.4em;
 }
 
@@ -102,7 +108,7 @@ span.marker, td h1 {
 }
 
 span.marker::before {
-	content: '\2713';
+	content: '\2713'; /* check mark */
 	padding: 0.2em 0.4em;
 	color: white;
 	background: black;
