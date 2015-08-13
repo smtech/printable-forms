@@ -2,20 +2,26 @@
 	
 require_once('common.inc.php');
 
+$smarty->assign('formAction', $_SERVER['PHP_SELF']);
+
 if(empty($_FILES['csv'])) {
-	$smarty->assign('formAction', $_SERVER['PHP_SELF']);
 	$smarty->display('book-list-upload.tpl');
 	exit;
 } else {
-	$file = fopen($_FILES['csv']['tmp_name'], 'r');
-	$columns = fgetcsv($file);
-	$data = array();
-	while($row = fgetcsv($file)) {
-		if (!empty($row)) {
-			$data[] = array_combine($columns, $row);
+	if ($file = fopen($_FILES['csv']['tmp_name'], 'r')) {
+		$columns = fgetcsv($file);
+		$data = array();
+		while($row = fgetcsv($file)) {
+			if (!empty($row)) {
+				$data[] = array_combine($columns, $row);
+			}
 		}
+		fclose($file);
+	} else {
+		$smarty->addMessage('Missing File', 'You need to upload a CSV file for this to work!', NotificationMessage::ERROR);
+		$smarty->display('book-list-upload.tpl');
+		exit;
 	}
-	fclose($file);
 	
 	$sections = array();
 	$section = array();
