@@ -11,6 +11,6 @@
 	<li>&hellip;while viewing an analysis, click the bookmarklet.</li>
 </ol>
 
-<p>Et voil&#224;!
+<p>Et voil&#224;!</p>
 
 {/block}

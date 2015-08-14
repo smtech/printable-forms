@@ -6,12 +6,12 @@
 		<div id="wrapper">
 			<div id="content">
 				
+				<h1>{$title}</h1>
+				
 				<table>
 					<thead>
 						<tr class="courses">
-							<td>
-								<h1>{$dept}</h1>
-							</td>
+							<td/>
 							{foreach $courses as $course}
 								<th><div class="course">{$course}</div></th>
 							{/foreach}

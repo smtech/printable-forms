@@ -14,6 +14,41 @@ body {
 	#content {
 		margin: 1em;
 	}
+
+	/* sticky headers never scroll out of the window */
+	thead {
+		position: -webkit-sticky;
+		position: -moz-sticky;
+		position: -ms-sticky;
+		position: -o-sticky;
+		position: sticky;
+		top: 0;
+	}
+}
+
+@media print {
+	
+	/* request that table headers be reprinted on each page */
+	thead {
+		display: table-header-group;
+	}
+	
+	#content {
+		min-width: 10in;
+	}
+	
+	tr {
+		break-before: avoid;
+		page-break-before: avoid;
+		page-break-inside: avoid;
+		break-after: avoid;
+		page-break-after: avoid;
+	}
+	
+	tr.head {
+		page-break-before: auto;
+		break-before: auto;
+	}
 }
 
 #content td, #content th {
@@ -24,10 +59,22 @@ table {
 	border-collapse: collapse;
 }
 
+
 thead th:nth-child(even) {
 	background: #ffc;
 }
 
+thead th:nth-child(odd) {
+	background: #fff;
+}
+
+thead tr {
+	border-bottom: solid 1px thin;
+}
+
+tr.courses {
+	border-bottom: solid thin black;
+}
 tr:nth-child(odd).standards-group.odd {
 	background: #fee;
 }
@@ -61,7 +108,7 @@ tr:nth-child(even).standards-group.even td:nth-child(even){
 }
 
 tr.head {
-	border-top: solid 1px black;
+	border-top: solid thin black;
 }
 
 td, th {
@@ -98,7 +145,10 @@ td {
 }
 
 h1 {
+	font-size: 14pt;
+	font-weight: bold;
 	margin: 0;
+	margin-bottom: 0.5em;
 }
 
 span.marker, td h1 {
