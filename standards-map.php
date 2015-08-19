@@ -61,7 +61,7 @@ if (!empty($_REQUEST['map'])) {
 				$standard = $nextStandard;
 			} else {
 				if ($total !== false && !empty($course)) {
-					$level[$course] = $total;
+					$level[] = $total;
 				}
 			}
 		}
