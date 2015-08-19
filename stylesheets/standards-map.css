@@ -164,3 +164,8 @@ span.marker::before {
 	background: black;
 	border-radius: 1em;
 }
+
+.head span.marker::before {
+	background: red;
+	border: solid 1px maroon;
+}
