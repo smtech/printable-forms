@@ -33,8 +33,10 @@ function remoteCacheData(scraping, url) {
 	http.setRequestHeader("Connection", "close");
 	http.onreadystatechange = function() {//Call a function when the state changes.
 		if(http.readyState === 4 && http.status === 200) {
-			window.location.assign(
-				REMOTE_URL + '?map=' + http.responseText);
+			if (window.open(REMOTE_URL + '?map=' + http.responseText, '_blank') == false) {
+				/* http://stackoverflow.com/a/1089792 to really fix this */
+				alert('Please allow your browser to open new "pop-up" windows from CurricUplan. Look in your browser location bar for an icon that indicates that a pop-up window was just blocked and then give permission to hosting.curricuplan.com to always open pop-ups.');
+			}
 		}
 	};
 	http.send(params);
