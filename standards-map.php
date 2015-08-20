@@ -78,7 +78,7 @@ if (!empty($_REQUEST['map'])) {
 } elseif (!empty($_REQUEST['analysis'])) {
 
 	/* allow access via bookmarklet */
-	header('Access-Control-Allow-Origin: http://hosting.curricuplan.com');
+	header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
 
 	/* the POST parameter is not URL-encoded, which breaks $_POST */
 	$data = substr(file_get_contents('php://input'), strlen('analysis='));
