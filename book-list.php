@@ -5,7 +5,7 @@ require_once('common.inc.php');
 $smarty->assign('formAction', $_SERVER['PHP_SELF']);
 
 if(empty($_FILES['csv'])) {
-	$smarty->display('book-list-upload.tpl');
+	$smarty->display('book-list/upload.tpl');
 	exit;
 } else {
 	if ($file = fopen($_FILES['csv']['tmp_name'], 'r')) {
@@ -19,7 +19,7 @@ if(empty($_FILES['csv'])) {
 		fclose($file);
 	} else {
 		$smarty->addMessage('Missing File', 'You need to upload a CSV file for this to work!', NotificationMessage::ERROR);
-		$smarty->display('book-list-upload.tpl');
+		$smarty->display('book-list/upload.tpl');
 		exit;
 	}
 	
@@ -61,6 +61,6 @@ if(empty($_FILES['csv'])) {
 
 	$smarty->assign('blanks', (isset($_REQUEST['blanks']) ? $_REQUEST['blanks'] : 0));
 	$smarty->assign('sections', $sections);
-	$smarty->display('book-list.tpl');
+	$smarty->display('book-list/sheet.tpl');
 }
 ?>

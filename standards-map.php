@@ -2,6 +2,9 @@
 
 require_once('common.inc.php');
 
+$smarty->assign('name', 'Generate Standards Map');
+$smarty->assign('category', 'CurricUplan');
+
 $cache = new Battis\SimpleCache($sql, basename(__FILE__, '.php'));
 $cache->setLifetime(Battis\SimpleCache::IMMORTAL_LIFETIME);
 
@@ -71,7 +74,7 @@ if (!empty($_REQUEST['map'])) {
 	/* and send it off to Smarty to display */
 	$smarty->assign('courses', $courses);
 	$smarty->assign('map', $map);
-	$smarty->display('standards-map.tpl');
+	$smarty->display('standards-map/sheet.tpl');
 	exit;
 	
 /* ...or are we being given data to cache? */
@@ -89,13 +92,13 @@ if (!empty($_REQUEST['map'])) {
 	
 /* ...or should we show some instructions? */
 } else {
-	$smarty->addStylesheet('stylesheets/standards-map-instructions.css');
+	$smarty->addStylesheet('stylesheets/standards-map/instructions.css');
 	$smarty->assign('bookmarklet', "javascript: (function () { 
     var jsCode = document.createElement('script'); 
     jsCode.setAttribute('src', 'https://skunkworks.stmarksschool.org/printable-forms/standards-map.js');                  
   document.body.appendChild(jsCode); 
  }());");
-	$smarty->display('standards-map-instructions.tpl');
+	$smarty->display('standards-map/instructions.tpl');
 }
 	
 ?>

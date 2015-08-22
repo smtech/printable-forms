@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<link rel="stylesheet" href="stylesheets/standards-map.css" />
+		<link rel="stylesheet" href="stylesheets/standards-map/sheet.css" />
 	</head>
 	<body>
 		<div id="wrapper">
