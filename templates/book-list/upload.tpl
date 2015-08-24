@@ -1,9 +1,5 @@
-{extends file="page.tpl"}
-{block name="content"}
-
-<div class="container page-header">
-	<h1>Book Lists <small>Printable Forms</small></h1>
-</div>
+{extends file="subpage.tpl"}
+{block name="subcontent"}
 
 <div class="container">
 	<div class="readable-width">

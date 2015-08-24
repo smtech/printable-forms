@@ -1,15 +1,11 @@
-{extends file="page.tpl"}
-{block name="content"}
-
-<div class="container page-header">
-	<h1>Standards Map <small>CurricUplan</small></h1>
-</div>
+{extends file="subpage.tpl"}
+{block name="subcontent"}
 
 <div class="container">
 	<p>The process for generating a "nice" standards map is:</p>
 	
 	<ol>
-		<li>Install the bookmarklet, by dragging this bookmarklet to your bookmarks bar: <h3 style="display: inline-block;"><span class="label label-primary label-lg"><a href="{$bookmarklet}">Generate Map</a></span></h3></li>
+		<li>Install the bookmarklet, by dragging this bookmarklet to your bookmarks bar: <span class="label label-primary bookmarklet"><a href="{$bookmarklet}">Generate Map</a></span></li>
 		<li>Browse <a href="http://curricuplan.stmarksschool.org">CurricUplan</a> and&hellip;</li>
 		<li>&hellip;while viewing an analysis, click the bookmarklet.</li>
 	</ol>

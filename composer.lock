@@ -133,12 +133,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/smtech/stmarkssmarty.git",
-                "reference": "c2e51aed4e7ddfb20964f72e9d776a6b652784d4"
+                "reference": "79d3c375efdd2f318bbab12292ee90f00c3a5652"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/smtech/stmarkssmarty/zipball/c2e51aed4e7ddfb20964f72e9d776a6b652784d4",
-                "reference": "c2e51aed4e7ddfb20964f72e9d776a6b652784d4",
+                "url": "https://api.github.com/repos/smtech/stmarkssmarty/zipball/79d3c375efdd2f318bbab12292ee90f00c3a5652",
+                "reference": "79d3c375efdd2f318bbab12292ee90f00c3a5652",
                 "shasum": ""
             },
             "require": {
@@ -162,7 +162,7 @@
                 }
             ],
             "description": "A standard Smarty install for St. Mark's projects",
-            "time": "2015-08-21 16:28:07"
+            "time": "2015-08-22 02:01:32"
         }
     ],
     "packages-dev": [],

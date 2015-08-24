@@ -2,7 +2,7 @@
 	
 require_once('common.inc.php');
 
-$smarty->assign('formAction', $_SERVER['PHP_SELF']);
+$smarty->assign('name', 'Book Lists');
 
 if(empty($_FILES['csv'])) {
 	$smarty->display('book-list/upload.tpl');
