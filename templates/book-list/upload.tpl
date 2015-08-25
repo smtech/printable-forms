@@ -7,6 +7,7 @@
 	</div>
 </div>
 
+{assign var="formFileUpload" value=true}
 {include file="book-list/form.tpl"}
 
 {/block}
