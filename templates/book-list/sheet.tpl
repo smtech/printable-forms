@@ -13,8 +13,8 @@
 						<div class="name">{$s['metadata']['name']}</div>
 						<div class="id">{$s['metadata']['id']}</div>
 						<div class="teacher">{$s['metadata']['teacher']}</div>
-						<div class="count books">{count($s['books'])} books</div>
-						<div class="count students">{count($s['students'])} students</div>
+						<div class="count books">{count($s['books'])} book{if count($s['books']) > 1}s{/if}</div>
+						<div class="count students">{count($s['students'])} student{if count($s['students'])}s{/if}</div>
 					</div><!-- metadata -->
 					
 					<table class="book-list">
