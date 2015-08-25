@@ -13,6 +13,7 @@
 	    "smtech/stmarks-colors": "dev-master",
 	    "smtech/stmarkssmarty": "dev-master",
 	    "battis/simplecache": "~1.0",
+	    "battis/data-utilities": "dev-master",
 	    "ext-tidy": "~2.0"
     }
 }

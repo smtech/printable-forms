@@ -8,14 +8,14 @@
 		
 		{foreach $sections as $s}
 			<div class="section">
-				<div class="page">
+				<div class="page page-1">
 					<div class="metadata">
 						<div class="name">{$s['metadata']['name']}</div>
 						<div class="id">{$s['metadata']['id']}</div>
 						<div class="teacher">{$s['metadata']['teacher']}</div>
 						<div class="count books">{count($s['books'])} books</div>
 						<div class="count students">{count($s['students'])} students</div>
-					</div>
+					</div><!-- metadata -->
 					
 					<table class="book-list">
 						<thead>
@@ -58,7 +58,7 @@
 								{/for}
 							</tr>
 						</tfoot>
-					</table>
+					</table><!-- book-list-->
 	
 					<table class="initials">
 						<caption>Initials</caption>
@@ -72,10 +72,10 @@
 								<td class="initial">&nbsp;</td>
 							</tr>
 						</tbody>
-					</table>
-				</div>
+					</table><!-- initials -->
+				</div><!-- page-1 -->
 	
-				<div class="page">
+				<div class="page page-2">
 					<div class="instructions">
 		
 						<h3>Instructions for Students</h3>
@@ -83,7 +83,7 @@
 						<ul>
 							<li>Please initial under the column of each book or supply received in your row.</li>
 							<li>If you later need to return your book or supply, please return it directly to the Book Store.</li>
-							<li>The Book Store can only accept unmarked books and supplies. If you think that you may drop this class, please do not put your name on anything&hellip; yet.</li>
+							<li>The Book Store can only accept unmarked books and supplies. If you think that you may drop this class, please do not put your name on anything... yet.</li>
 							<li>If you have been added to this class after books and supplies have been distributed, you may purchase them directly from the Book Store.</li>
 						</ul>
 						
@@ -124,12 +124,12 @@
 							<li>Students who drop a class must return their unused, unmarked books and supplies directly to the Book Store.</li>
 								<li>Students who add a class must purchase necessary books and supplies directly from the Book Store.</li>
 						</ul>
-					</div>
-				</div>
-			</div>
+					</div><!-- instructions -->
+				</div><!-- page-2 -->
+			</div><!-- section -->
 						
 		{/foreach}
 		
-		</div>
+		</div><!-- wrapper -->
 	</body>
 </html>
