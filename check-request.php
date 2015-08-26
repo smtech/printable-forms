@@ -1,4 +1,5 @@
 <?php 
+	
 	$payToBlankWidth = "3.6875in";
 	$dateBlankWidth = "2.1875in";
 	$accountNumberBlankWidth = "1.625in";

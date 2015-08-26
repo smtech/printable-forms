@@ -5,7 +5,7 @@
 </FilesMatch>
 
 # block access by file extension
-<FilesMatch "(\.sql|\.inc.php)$">
+<FilesMatch "(\.sql|\.inc\.php)$">
 	Order allow,deny
 	Deny from all
 </FilesMatch>
@@ -14,4 +14,9 @@
 <Files secrets.xml>
 	Order allow,deny
 	Deny from all
+</Files>
+
+<Files check-request.php>
+	Order allow,deny
+	Allow from all
 </Files>

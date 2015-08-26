@@ -166,15 +166,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/smtech/stmarkssmarty.git",
-                "reference": "cef2109b65926dd1ba1bc0e06b05c4e9d02e7434"
+                "reference": "26690ae0b9bb9418fa2cf1723b86c0f0a07c1971"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/smtech/stmarkssmarty/zipball/cef2109b65926dd1ba1bc0e06b05c4e9d02e7434",
-                "reference": "cef2109b65926dd1ba1bc0e06b05c4e9d02e7434",
+                "url": "https://api.github.com/repos/smtech/stmarkssmarty/zipball/26690ae0b9bb9418fa2cf1723b86c0f0a07c1971",
+                "reference": "26690ae0b9bb9418fa2cf1723b86c0f0a07c1971",
                 "shasum": ""
             },
             "require": {
+                "battis/data-utilities": "dev-master",
                 "smarty/smarty": "3.1.*",
                 "smtech/stmarks-colors": "dev-master"
             },
@@ -199,7 +200,7 @@
                 }
             ],
             "description": "A standard Smarty install for St. Mark's projects",
-            "time": "2015-08-25 15:54:52"
+            "time": "2015-08-26 15:11:10"
         }
     ],
     "packages-dev": [],
