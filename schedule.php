@@ -491,6 +491,7 @@ $minuteHeight = setMinuteHeight($schedule, ($letter ? LETTER_PAGE_HEIGHT : LEGAL
 				padding: 0.1em 0.5em;
 				margin: 0.25em;
 				border-radius: 0.25em;
+				max-width: 300px;
 			}
 			
 			button {
@@ -766,6 +767,9 @@ $minuteHeight = setMinuteHeight($schedule, ($letter ? LETTER_PAGE_HEIGHT : LEGAL
 				<button  type="button" onclick="window.print();"><?= ucwords(FORM_MODE_PRINTABLE) ?></button>
 				<input type="hidden" name="<?= FREE_BW ?>" value="<?= ($bw ? 1 : 0) ?>" />
 				<input type="hidden" name="<?= PAGE_SIZE ?>" value="<?= ($letter ? PAGE_SIZE_LETTER : PAGE_SIZE_LEGAL) ?>" />
+				</div>
+				<div class="section">
+					<p>Make sure that you enable printing backgrounds to get a full-color print-out! (Instructions for <a target="_blank" href="http://help.apple.com/safari/mac/8.0/#/ibrw1060">Safari</a>, <a target="_blank" href="https://support.google.com/chrome/answer/1379552?hl=en">Chrome</a>, <a target="_blank" href="https://support.mozilla.org/en-US/kb/how-print-web-pages-firefox?redirectlocale=en-US&redirectslug=how-print-websites">Firefox</a>).</p>
 				</div>
 				<?php endif; ?>
 			</div>
