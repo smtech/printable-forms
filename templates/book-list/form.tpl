@@ -13,7 +13,7 @@
 		<label for="teacher-deadline" class="control-label col-sm-{$formLabelWidth}">Teacher Deadline</label>
 		<div class="col-sm-4">
 			<div class="input-group date">
-				<input type="text" class="form-control" name="teacher-deadline" id="teacher-deadline" placeholder="When is the form due from teachers?" /><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+				<input type="text" class="form-control" name="teacher-deadline" id="teacher-deadline" placeholder="When is the form due from teachers?" /><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
 			</div>
 		</div>
 	</div>
@@ -22,7 +22,7 @@
 		<label for="dept-deadline" class="control-label col-sm-{$formLabelWidth}">Dept. Deadline</label>
 		<div class="col-sm-4">
 			<div class="input-group date">
-				<input type="text" class="form-control" name="dept-deadline" id="dept-deadline" placeholder="When is the form due from dept. heads?" /><div class="input-group-addon"><span class="glyphicon glyphicon-th"></span></div>
+				<input type="text" class="form-control" name="dept-deadline" id="dept-deadline" placeholder="When is the form due from dept. heads?" /><div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
 			</div>
 		</div>
 	</div>
