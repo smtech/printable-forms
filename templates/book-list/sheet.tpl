@@ -94,7 +94,7 @@
 							<li>On the first day of class:
 								<ol>
 									<li>Issue books and supplies to your students.</li>
-									<li>Ensure that every student initials in the columns corresponding to the books and supplies that they have received.</li>
+									<li>Ensure that every student initials in the columns corresponding to the books and supplies that they have received.<p><em>Nota bene:</em> If you have issued any of the supplies to yourself, please indicate that in the tallies by creating a row for yourself.</p></li>
 									<li>Count your remaining books and supplies and enter those tallies in the "Returned by Teacher" row.</li>
 									<li>Initial this sheet to indicate that it is correct (students have initialed, tallies are accurate) to the best of your knowledge.</li>
 									<li>Return this sheet (with all extra books and supplies) to your department chair immediately after classes on <strong>{$teacherDeadline}</strong>.</li>
