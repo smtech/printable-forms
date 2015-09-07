@@ -20,3 +20,8 @@
 	Order allow,deny
 	Allow from all
 </Files>
+
+<Files sheet.css>
+	Order allow,deny
+	Allow from all
+</Files>
