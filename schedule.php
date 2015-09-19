@@ -409,6 +409,9 @@ foreach($COLOR_ENUM as $color) {
 }
 
 /* apply individual block settings */
+function compareStartTimes($a, $b) {
+	return $a[START] - $b[START];
+}
 if (!empty($_REQUEST['schedule'])) {
 	foreach ($_REQUEST['schedule'] as $day => $blocks) {
 		foreach ($blocks as $color => $info) {
@@ -423,8 +426,10 @@ if (!empty($_REQUEST['schedule'])) {
 				}
 			}
 		}
+		uasort($schedule[$day], "compareStartTimes");
 	}
 }
+
 
 $minuteHeight = setMinuteHeight($schedule, ($letter ? LETTER_PAGE_HEIGHT : LEGAL_PAGE_HEIGHT));
 
