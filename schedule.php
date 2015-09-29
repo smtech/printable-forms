@@ -419,6 +419,9 @@ if (!empty($_REQUEST['schedule'])) {
 			foreach ($info as $key => $value) {
 				if (!empty($value)) {
 					if ($key == START || $key == END){
+						if (!preg_match('/^\d+$/', $value)) {
+							$value = strtotime($value);
+						}
 						$value = strtotime($today->format('Y-m-d ') . date('H:i:s', $value));
 					}
 					$schedule[$day][$color][$key] = $value;
