@@ -74,6 +74,7 @@ if (!empty($_REQUEST['map'])) {
 	/* and send it off to Smarty to display */
 	$smarty->assign('courses', $courses);
 	$smarty->assign('map', $map);
+	$smarty->assign('timestamp', $cache->getCacheTimestamp($_REQUEST['map'])->format('F j, Y'));
 	$smarty->display('standards-map/sheet.tpl');
 	exit;
 	

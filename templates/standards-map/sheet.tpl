@@ -40,6 +40,7 @@
 						{/foreach}
 					</tbody>
 				</table>
+				<p align="right">Updated {$timestamp}</p>
 			</div>
 		</div>
 	</body>
