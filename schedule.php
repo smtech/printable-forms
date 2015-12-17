@@ -54,12 +54,17 @@ define('DEFAULT_FORM_MODE', FORM_MODE_EDITABLE);
 define('PAGE_SIZE', 'page');
 define('PAGE_SIZE_LETTER', 'letter');
 define('PAGE_SIZE_LEGAL', 'legal');
+define('PAGE_SIZE_TABLOID', 'tabloid');
 define('DEFAULT_PAGE_SIZE', PAGE_SIZE_LETTER);
 
 /* dimensions in inches */
 define('DEFAULT_FIVE_MINUTES', 0.0185);
 define('LETTER_PAGE_HEIGHT', 11);
 define('LEGAL_PAGE_HEIGHT', 14);
+define('TABLOID_PAGE_HEIGHT', 17);
+define('LETTER_PAGE_WIDTH', 8.5);
+define('LEGAL_PAGE_WIDTH', 8.5);
+define('TABLOID_PAGE_WIDTH', 11);
 define('PAGE_WIDTH', 8.5);
 define('MARGIN', 0.5);
 define('HEADER_HEIGHT', 0.75);
@@ -379,7 +384,22 @@ $schedule[FRIDAY][CO_CURRICULAR][START] = strtotime('12:55pm');
 /* set form parameters */
 $printable = FORM_MODE_PRINTABLE == (isset($_REQUEST[FORM_MODE]) ? $_REQUEST[FORM_MODE] : DEFAULT_FORM_MODE);
 $bw = (isset($_REQUEST[FREE_BW]) ? $_REQUEST[FREE_BW] == true: DEFAULT_FREE_BW);
-$letter = PAGE_SIZE_LETTER == (isset($_REQUEST[PAGE_SIZE]) ? $_REQUEST[PAGE_SIZE]: DEFAULT_PAGE_SIZE);
+$page = (isset($_REQUEST[PAGE_SIZE]) ? $_REQUEST[PAGE_SIZE]: DEFAULT_PAGE_SIZE);
+switch($page) {
+	case PAGE_SIZE_LEGAL:
+		$pageWidth = LEGAL_PAGE_WIDTH;
+		$pageHeight = LEGAL_PAGE_HEIGHT;
+		break;
+	case PAGE_SIZE_TABLOID:
+		$pageWidth = TABLOID_PAGE_WIDTH;
+		$pageHeight = TABLOID_PAGE_HEIGHT;
+		break;
+	case PAGE_SIZE_LETTER:
+	default:
+		$pageWidth = LETTER_PAGE_WIDTH;
+		$pageHeight = LETTER_PAGE_HEIGHT;
+		break;
+}
 $header = (empty($_REQUEST['header']) ? DEFAULT_HEADER : $_REQUEST['header']);
 $footer = (empty($_REQUEST['footer']) ? DEFAULT_FOOTER : $_REQUEST['footer']);
 
@@ -433,7 +453,7 @@ if (!empty($_REQUEST['schedule'])) {
 }
 
 
-$minuteHeight = setMinuteHeight($schedule, ($letter ? LETTER_PAGE_HEIGHT : LEGAL_PAGE_HEIGHT));
+$minuteHeight = setMinuteHeight($schedule, $pageHeight);
 
 ?>
 <!DOCTYPE html>
@@ -442,7 +462,7 @@ $minuteHeight = setMinuteHeight($schedule, ($letter ? LETTER_PAGE_HEIGHT : LEGAL
 		<title>Color Schedule</title>
 		<style type="text/css">
 			@page {
-				size: <?= PAGE_WIDTH ?>in <?= ($letter ? LETTER_PAGE_HEIGHT : LEGAL_PAGE_HEIGHT) ?>in;
+				size: <?= $pageWidth ?>in <?= $pageHeight ?>in;
 				margin: <?= MARGIN ?>in;
 			}
 			@media print {
@@ -466,7 +486,7 @@ $minuteHeight = setMinuteHeight($schedule, ($letter ? LETTER_PAGE_HEIGHT : LEGAL
 			}
 		<?php if ($printable): ?>
 			#wrapper {
-				width: <?= PAGE_WIDTH ?>in;
+				width: <?= $pageWidth ?>in;
 			}
 			<?php else: ?>
 			#wrapper {
@@ -767,13 +787,14 @@ $minuteHeight = setMinuteHeight($schedule, ($letter ? LETTER_PAGE_HEIGHT : LEGAL
 					<label for="<?= FREE_BW ?>-true"><input type="radio" id="<?= FREE_BW ?>-true" name="<?= FREE_BW ?>" value="1" <?= ($bw ? 'checked' : '') ?> /> B&W Free Blocks</label>
 				</div>
 				<div class="section">
-					<label for="<?= PAGE_SIZE_LETTER ?>"><input type="radio" id="<?= PAGE_SIZE_LETTER ?>" name="<?= PAGE_SIZE ?>" value="<?= PAGE_SIZE_LETTER ?>" <?= ($letter ? 'checked' : '') ?> /> <?= ucwords(PAGE_SIZE_LETTER) ?></label>
-					<label for="<?= PAGE_SIZE_LEGAL ?>"><input type="radio" id="<?= PAGE_SIZE_LEGAL ?>" name="<?= PAGE_SIZE ?>" value="<?= PAGE_SIZE_LEGAL ?>" <?= ($letter ? '' : 'checked') ?> /> <?= ucwords(PAGE_SIZE_LEGAL) ?></label>
+					<label for="<?= PAGE_SIZE_LETTER ?>"><input type="radio" id="<?= PAGE_SIZE_LETTER ?>" name="<?= PAGE_SIZE ?>" value="<?= PAGE_SIZE_LETTER ?>" <?= ($page == PAGE_SIZE_LETTER ? 'checked' : '') ?> /> <?= ucwords(PAGE_SIZE_LETTER) ?></label>
+					<label for="<?= PAGE_SIZE_LEGAL ?>"><input type="radio" id="<?= PAGE_SIZE_LEGAL ?>" name="<?= PAGE_SIZE ?>" value="<?= PAGE_SIZE_LEGAL ?>" <?= ($page == PAGE_SIZE_LEGAL ? 'checked' : '') ?> /> <?= ucwords(PAGE_SIZE_LEGAL) ?></label>
+					<label for="<?= PAGE_SIZE_TABLOID ?>"><input type="radio" id="<?= PAGE_SIZE_TABLOID ?>" name="<?= PAGE_SIZE ?>" value="<?= PAGE_SIZE_TABLOID ?>" <?= ($page == PAGE_SIZE_TABLOID ? 'checked' : '') ?> /> <?= ucwords(PAGE_SIZE_TABLOID) ?></label>
 				</div>
 				<?php else: ?>
 				<button  type="button" onclick="window.print();"><?= ucwords(FORM_MODE_PRINTABLE) ?></button>
 				<input type="hidden" name="<?= FREE_BW ?>" value="<?= ($bw ? 1 : 0) ?>" />
-				<input type="hidden" name="<?= PAGE_SIZE ?>" value="<?= ($letter ? PAGE_SIZE_LETTER : PAGE_SIZE_LEGAL) ?>" />
+				<input type="hidden" name="<?= PAGE_SIZE ?>" value="<?= $page ?>" />
 				</div>
 				<div class="section">
 					<p>Make sure that you enable printing backgrounds to get a full-color print-out! (Instructions for <a target="_blank" href="http://help.apple.com/safari/mac/8.0/#/ibrw1060">Safari</a>, <a target="_blank" href="https://support.google.com/chrome/answer/1379552?hl=en">Chrome</a>, <a target="_blank" href="https://support.mozilla.org/en-US/kb/how-print-web-pages-firefox?redirectlocale=en-US&redirectslug=how-print-websites">Firefox</a>).</p>
