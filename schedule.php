@@ -125,6 +125,7 @@ function getUniqueId($length = 8)
 }
 
 $cache = new HierarchicalSimpleCache($sql, basename(__FILE__, '.php'));
+$cache->setLifetime(HierarchicalSimpleCache::IMMORTAL_LIFETIME);
 if (!empty($_REQUEST['cache'])) {
     $vars = $cache->getCache($_REQUEST['cache']);
     if (!empty($vars)) {
