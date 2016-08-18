@@ -1,8 +1,10 @@
 <?php
 
-require_once('vendor/autoload.php');
+require_once 'common.inc.php';
 
 use smtech\StMarksColors as col;
+use Battis\HierarchicalSimpleCache;
+use Battis\DataUtilities;
 
 /* days */
 define('MONDAY', 'monday');
@@ -106,6 +108,35 @@ function height($duration, $unitHeight)
     $_duration = ($duration / 60) * $unitHeight;
     return $_duration . "in";
 }
+
+/**
+ * @link http://stackoverflow.com/a/3954887 Stack Overflow
+ *
+ * @param integer $length
+ * @return string
+ */
+function getUniqueId($length = 8)
+{
+    global $cache; // FIXME bad!
+    do {
+        $candidate = substr(md5(uniqid(mt_rand(), true)), 0, $length);
+    } while (!empty($cache->getCache($candidate)));
+    return $candidate;
+}
+
+$cache = new HierarchicalSimpleCache($sql, basename(__FILE__, '.php'));
+if (!empty($_REQUEST['cache'])) {
+    $vars = $cache->getCache($_REQUEST['cache']);
+    if (!empty($vars)) {
+        foreach($vars as $name => $value) {
+            $$name = $value;
+        }
+    } else {
+        unset($_REQUEST['cache']);
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?' . http_build_query($_REQUEST));
+        exit;
+    }
+} else {
 
 /* general schedule */
 $NORMAL_MORNING = array(
@@ -458,6 +489,16 @@ if (!empty($_REQUEST['schedule'])) {
 
 
 $minuteHeight = setMinuteHeight($schedule, $pageHeight);
+
+$key = getUniqueId();
+$vars = get_defined_vars();
+unset($vars['sql']);
+unset($vars['cache']);
+unset($vars['cache']);
+unset($vars['smarty']);
+$cache->setCache($key, $vars, HierarchicalSimpleCache::IMMORTAL_LIFETIME);
+
+}
 
 ?>
 <!DOCTYPE html>
@@ -925,7 +966,12 @@ $minuteHeight = setMinuteHeight($schedule, $pageHeight);
                         </tr>
                     </table>
 
-                <div id="link">http://j.mp/color-schedule</div>
+                <div id="link"><a href="<?php
+
+                $shortlink = DataUtilities::URLfromPath(__FILE__) . '?cache=' . $key;
+                echo $shortlink;
+
+                 ?>"><?= $shortlink ?></a></div>
 
                 </div>
 
