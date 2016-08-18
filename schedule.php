@@ -128,7 +128,7 @@ $cache = new HierarchicalSimpleCache($sql, basename(__FILE__, '.php'));
 if (!empty($_REQUEST['cache'])) {
     $vars = $cache->getCache($_REQUEST['cache']);
     if (!empty($vars)) {
-        foreach($vars as $name => $value) {
+        foreach ($vars as $name => $value) {
             $$name = $value;
         }
     } else {
@@ -137,367 +137,367 @@ if (!empty($_REQUEST['cache'])) {
         exit;
     }
 } else {
+    /* general schedule */
+    $NORMAL_MORNING = array(
+        TITLE => '',
+        LOCATION => '',
+        START => strtotime('7:45am'),
+        END => strtotime('8:00am')
+    );
+    $MORNING_MEETING = array(
+        TITLE => '',
+        LOCATION => '',
+        START => strtotime('8:00am'),
+        END => strtotime('8:25am')
+    );
+    $PASSING_1 = array(
+        TITLE => '',
+        LOCATION => '',
+        START => strtotime('8:25am'),
+        END => strtotime('8:30am')
+    );
+    $BLOCK_1 = array(
+        TITLE => '',
+        LOCATION => '',
+        START => strtotime('8:30am'),
+        END => strtotime('9:50am')
+    );
+    $PASSING_2 = array(
+        TITLE => '',
+        LOCATION => '',
+        START => strtotime('9:50am'),
+        END => strtotime('9:55am')
+    );
+    $BLOCK_2 = array(
+        TITLE => '',
+        LOCATION => '',
+        START => strtotime('9:55am'),
+        END => strtotime('10:40am')
+    );
+    $MORNING_BREAK = array(
+        TITLE => '',
+        LOCATION => '',
+        START => strtotime('10:40am'),
+        END => strtotime('11:00am')
+    );
+    $BLOCK_3 = array(
+        TITLE => '',
+        LOCATION => '',
+        START => strtotime('11:00am'),
+        END => strtotime('12:20pm')
+    );
+    $PASSING_LUNCH = array(
+        TITLE => '',
+        LOCATION => '',
+        START => strtotime('12:20pm'),
+        END => strtotime('12:25pm')
+    );
+    $LUNCH = array(
+        TITLE => 'Lunch',
+        LOCATION => '',
+        START => strtotime('12:20pm'),
+        END => strtotime('12:55pm')
+    );
+    $PASSING_4 = array(
+        TITLE => '',
+        LOCATION => '',
+        START => strtotime('12:55pm'),
+        END => strtotime('1:00pm')
+    );
+    $BLOCK_4 = array(
+        TITLE => '',
+        LOCATION => '',
+        START => strtotime('1:00pm'),
+        END => strtotime('1:40pm')
+    );
+    $PASSING_5 = array(
+        TITLE => '',
+        LOCATION => '',
+        START => strtotime('1:40pm'),
+        END => strtotime('1:45pm')
+    );
+    $BLOCK_5 = array(
+        TITLE => '',
+        LOCATION => '',
+        START => strtotime('1:45pm'),
+        END => strtotime('3:05pm')
+    );
+    $SPACER = array(SPACER);
 
-/* general schedule */
-$NORMAL_MORNING = array(
-    TITLE => '',
-    LOCATION => '',
-    START => strtotime('7:45am'),
-    END => strtotime('8:00am')
-);
-$MORNING_MEETING = array(
-    TITLE => '',
-    LOCATION => '',
-    START => strtotime('8:00am'),
-    END => strtotime('8:25am')
-);
-$PASSING_1 = array(
-    TITLE => '',
-    LOCATION => '',
-    START => strtotime('8:25am'),
-    END => strtotime('8:30am')
-);
-$BLOCK_1 = array(
-    TITLE => '',
-    LOCATION => '',
-    START => strtotime('8:30am'),
-    END => strtotime('9:50am')
-);
-$PASSING_2 = array(
-    TITLE => '',
-    LOCATION => '',
-    START => strtotime('9:50am'),
-    END => strtotime('9:55am')
-);
-$BLOCK_2 = array(
-    TITLE => '',
-    LOCATION => '',
-    START => strtotime('9:55am'),
-    END => strtotime('10:40am')
-);
-$MORNING_BREAK = array(
-    TITLE => '',
-    LOCATION => '',
-    START => strtotime('10:40am'),
-    END => strtotime('11:00am')
-);
-$BLOCK_3 = array(
-    TITLE => '',
-    LOCATION => '',
-    START => strtotime('11:00am'),
-    END => strtotime('12:20pm')
-);
-$PASSING_LUNCH = array(
-    TITLE => '',
-    LOCATION => '',
-    START => strtotime('12:20pm'),
-    END => strtotime('12:25pm')
-);
-$LUNCH = array(
-    TITLE => 'Lunch',
-    LOCATION => '',
-    START => strtotime('12:20pm'),
-    END => strtotime('12:55pm')
-);
-$PASSING_4 = array(
-    TITLE => '',
-    LOCATION => '',
-    START => strtotime('12:55pm'),
-    END => strtotime('1:00pm')
-);
-$BLOCK_4 = array(
-    TITLE => '',
-    LOCATION => '',
-    START => strtotime('1:00pm'),
-    END => strtotime('1:40pm')
-);
-$PASSING_5 = array(
-    TITLE => '',
-    LOCATION => '',
-    START => strtotime('1:40pm'),
-    END => strtotime('1:45pm')
-);
-$BLOCK_5 = array(
-    TITLE => '',
-    LOCATION => '',
-    START => strtotime('1:45pm'),
-    END => strtotime('3:05pm')
-);
-$SPACER = array(SPACER);
+    $i = 0; /* unique key counter */
 
-$i = 0; /* unique key counter */
+    /* the weekly schedule */
+    $schedule = array(
+        MONDAY => array(
+            FREE . $i++ => $NORMAL_MORNING,
+            X_BLOCK . $i++ => $MORNING_MEETING,
+            FREE . $i++ => $PASSING_1,
+            GREEN => $BLOCK_1,
+            FREE . $i++ => $PASSING_2,
+            PLUM => $BLOCK_2,
+            X_BLOCK . $i++ => $MORNING_BREAK,
+            RED => $BLOCK_3,
+            FREE . $i++ => $PASSING_LUNCH,
+            ALL_SCHOOL => $LUNCH,
+            FREE . $i++ => $PASSING_4,
+            CO_CURRICULAR => $BLOCK_4,
+            FREE . $i++ => $PASSING_5,
+            ORANGE => $BLOCK_5
+        ),
 
-/* the weekly schedule */
-$schedule = array(
-    MONDAY => array(
-        FREE . $i++ => $NORMAL_MORNING,
-        X_BLOCK . $i++ => $MORNING_MEETING,
-        FREE . $i++ => $PASSING_1,
-        GREEN => $BLOCK_1,
-        FREE . $i++ => $PASSING_2,
-        PLUM => $BLOCK_2,
-        X_BLOCK . $i++ => $MORNING_BREAK,
-        RED => $BLOCK_3,
-        FREE . $i++ => $PASSING_LUNCH,
-        ALL_SCHOOL => $LUNCH,
-        FREE . $i++ => $PASSING_4,
-        CO_CURRICULAR => $BLOCK_4,
-        FREE . $i++ => $PASSING_5,
-        ORANGE => $BLOCK_5
-    ),
+        TUESDAY => array(
+            FREE . $i++ => $NORMAL_MORNING,
+            ALL_SCHOOL => $MORNING_MEETING,
+            FREE . $i++ => $PASSING_1,
+            BLUE => $BLOCK_1,
+            FREE . $i++ => $PASSING_2,
+            GREEN => $BLOCK_2,
+            X_BLOCK => $MORNING_BREAK,
+            PLUM => $BLOCK_3,
+            SPACER . $i++ => $SPACER,
+            FREE . $i++ => $LUNCH,
+            SPACER . $i++ => $SPACER,
+            BROWN => array(
+                TITLE => '',
+                LOCATION => '',
+                START => strtotime('12:55pm'),
+                END => strtotime('1:40pm')
+            ),
+            FREE . $i++ => $PASSING_5,
+            YELLOW => $BLOCK_5
+        ),
 
-    TUESDAY => array(
-        FREE . $i++ => $NORMAL_MORNING,
-        ALL_SCHOOL => $MORNING_MEETING,
-        FREE . $i++ => $PASSING_1,
-        BLUE => $BLOCK_1,
-        FREE . $i++ => $PASSING_2,
-        GREEN => $BLOCK_2,
-        X_BLOCK => $MORNING_BREAK,
-        PLUM => $BLOCK_3,
-        SPACER . $i++ => $SPACER,
-        FREE . $i++ => $LUNCH,
-        SPACER . $i++ => $SPACER,
-        BROWN => array(
-            TITLE => '',
-            LOCATION => '',
-            START => strtotime('12:55pm'),
-            END => strtotime('1:40pm')
+        WEDNESDAY => array(
+            FREE . $i++ => $NORMAL_MORNING,
+            ORANGE => array(
+                TITLE => '',
+                LOCATION => '',
+                START => strtotime('8:00am'),
+                END => strtotime('9:20am')
+            ),
+            FREE . $i++ => array(
+                TITLE => '',
+                LOCATION => '',
+                START => strtotime('9:20am'),
+                END => strtotime('9:25am')
+            ),
+            RED => array(
+                TITLE => '',
+                LOCATION => '',
+                START => strtotime('9:25am'),
+                END => strtotime('10:10am')
+            ),
+            FREE . $i++ => array(
+                TITLE => '',
+                LOCATION => '',
+                START => strtotime('10:10am'),
+                END => strtotime('10:15am')
+            ),
+            ALL_SCHOOL => array(
+                TITLE => 'School Meeting',
+                LOCATION => '',
+                START => strtotime('10:15am'),
+                END => strtotime('10:35am')
+            ),
+            FREE . $i++ => array(
+                TITLE => '',
+                LOCATION => '',
+                START => strtotime('10:35am'),
+                END => strtotime('10:40am')
+            ),
+            BROWN => array(
+                TITLE => '',
+                LOCATION => '',
+                START => strtotime('10:40am'),
+                END => strtotime('12:00pm')
+            ),
+            FREE . $i++ => array(
+                TITLE => 'Lunch',
+                LOCATION => '',
+                START => strtotime('12:00pm'),
+                END => strtotime('12:30pm')
+            ),
+            BLUE => array(
+                TITLE => '',
+                LOCATION => '',
+                START => strtotime('12:30pm'),
+                END => strtotime('1:15pm')
+            )
         ),
-        FREE . $i++ => $PASSING_5,
-        YELLOW => $BLOCK_5
-    ),
 
-    WEDNESDAY => array(
-        FREE . $i++ => $NORMAL_MORNING,
-        ORANGE => array(
-            TITLE => '',
-            LOCATION => '',
-            START => strtotime('8:00am'),
-            END => strtotime('9:20am')
+        THURSDAY => array(
+            SPACER . $i++ => $SPACER,
+            CO_CURRICULAR . $i++ => array(
+                TITLE => 'Meeting Block',
+                LOCATION => '',
+                START => strtotime('7:45am'),
+                END => strtotime('8:25am')
+            ),
+            FREE . $i++ => $PASSING_1,
+            YELLOW => $BLOCK_1,
+            FREE . $i++ => $PASSING_2,
+            ORANGE => $BLOCK_2,
+            X_BLOCK => $MORNING_BREAK,
+            PLUM => $BLOCK_3,
+            FREE . $i++ => $PASSING_LUNCH,
+            ALL_SCHOOL => $LUNCH,
+            FREE . $i++ => $PASSING_4,
+            CO_CURRICULAR . $i++ => $BLOCK_4,
+            FREE . $i++ => $PASSING_5,
+            GREEN => $BLOCK_5
         ),
-        FREE . $i++ => array(
-            TITLE => '',
-            LOCATION => '',
-            START => strtotime('9:20am'),
-            END => strtotime('9:25am')
+
+        FRIDAY => array(
+            FREE . $i++ => $NORMAL_MORNING,
+            ALL_SCHOOL => $MORNING_MEETING,
+            FREE . $i++ => $PASSING_1,
+            RED => $BLOCK_1,
+            FREE . $i++ => $PASSING_2,
+            YELLOW => $BLOCK_2,
+            X_BLOCK => $MORNING_BREAK,
+            BLUE => $BLOCK_3,
+            SPACER . $i++ => $SPACER,
+            FREE . $i++ => $LUNCH,
+            SPACER . $i++ => $SPACER,
+            CO_CURRICULAR => $BLOCK_4,
+            FREE . $i++ => $PASSING_5,
+            BROWN => $BLOCK_5
         ),
-        RED => array(
-            TITLE => '',
-            LOCATION => '',
-            START => strtotime('9:25am'),
-            END => strtotime('10:10am')
-        ),
-        FREE . $i++ => array(
-            TITLE => '',
-            LOCATION => '',
-            START => strtotime('10:10am'),
-            END => strtotime('10:15am')
-        ),
-        ALL_SCHOOL => array(
-            TITLE => 'School Meeting',
-            LOCATION => '',
-            START => strtotime('10:15am'),
-            END => strtotime('10:35am')
-        ),
-        FREE . $i++ => array(
-            TITLE => '',
-            LOCATION => '',
-            START => strtotime('10:35am'),
-            END => strtotime('10:40am')
-        ),
-        BROWN => array(
-            TITLE => '',
-            LOCATION => '',
-            START => strtotime('10:40am'),
-            END => strtotime('12:00pm')
-        ),
-        FREE . $i++ => array(
-            TITLE => 'Lunch',
-            LOCATION => '',
-            START => strtotime('12:00pm'),
-            END => strtotime('12:30pm')
-        ),
-        BLUE => array(
-            TITLE => '',
-            LOCATION => '',
-            START => strtotime('12:30pm'),
-            END => strtotime('1:15pm')
+
+        SATURDAY => array(
+            FREE . $i++ => array(
+                TITLE => '',
+                LOCATION => '',
+                START => strtotime('7:45am'),
+                END => strtotime('8:30am')
+            ),
+            X_BLOCK => array(
+                TITLE => '',
+                LOCATION => '',
+                START => strtotime('8:30am'),
+                END => strtotime('8:55am')
+            ),
+            FREE . $i++ => array(
+                TITLE => '',
+                LOCATION => '',
+                START => strtotime('8:55am'),
+                END => strtotime('9:00am')
+            ),
+            SM_SATURDAY => array(
+                TITLE => '',
+                LOCATION => '',
+                START => strtotime('9:00am'),
+                END => strtotime('11:30am')
+            ),
+            FREE . $i++ => array(
+                TITLE => '',
+                LOCATION => '',
+                START => strtotime('11:30am'),
+                END => strtotime('11:40am')
+            ),
+            ALL_SCHOOL => array(
+                TITLE => 'School Meeting',
+                LOCATION => '',
+                START => strtotime('11:40am'),
+                END => strtotime('12:00pm')
+            ),
+            FREE . $i++ => $LUNCH
         )
-    ),
+    );
 
-    THURSDAY => array(
-        SPACER . $i++ => $SPACER,
-        CO_CURRICULAR . $i++ => array(
-            TITLE => 'Meeting Block',
-            LOCATION => '',
-            START => strtotime('7:45am'),
-            END => strtotime('8:25am')
-        ),
-        FREE . $i++ => $PASSING_1,
-        YELLOW => $BLOCK_1,
-        FREE . $i++ => $PASSING_2,
-        ORANGE => $BLOCK_2,
-        X_BLOCK => $MORNING_BREAK,
-        PLUM => $BLOCK_3,
-        FREE . $i++ => $PASSING_LUNCH,
-        ALL_SCHOOL => $LUNCH,
-        FREE . $i++ => $PASSING_4,
-        CO_CURRICULAR . $i++ => $BLOCK_4,
-        FREE . $i++ => $PASSING_5,
-        GREEN => $BLOCK_5
-    ),
+    /* minor fine-tuning */
+    $schedule[MONDAY][ALL_SCHOOL][TITLE] = 'Seated Lunch';
+    $schedule[MONDAY][ALL_SCHOOL][START] = strtotime('12:25pm');
+    $schedule[TUESDAY][ALL_SCHOOL][TITLE] = 'Chapel';
+    $schedule[THURSDAY][ALL_SCHOOL][TITLE] = 'Seated Lunch';
+    $schedule[THURSDAY][ALL_SCHOOL][START] = strtotime('12:25pm');
+    $schedule[FRIDAY][ALL_SCHOOL][TITLE] = 'Chapel';
+    $schedule[FRIDAY][CO_CURRICULAR][START] = strtotime('12:55pm');
 
-    FRIDAY => array(
-        FREE . $i++ => $NORMAL_MORNING,
-        ALL_SCHOOL => $MORNING_MEETING,
-        FREE . $i++ => $PASSING_1,
-        RED => $BLOCK_1,
-        FREE . $i++ => $PASSING_2,
-        YELLOW => $BLOCK_2,
-        X_BLOCK => $MORNING_BREAK,
-        BLUE => $BLOCK_3,
-        SPACER . $i++ => $SPACER,
-        FREE . $i++ => $LUNCH,
-        SPACER . $i++ => $SPACER,
-        CO_CURRICULAR => $BLOCK_4,
-        FREE . $i++ => $PASSING_5,
-        BROWN => $BLOCK_5
-    ),
+    /* set form parameters */
+    $printable = FORM_MODE_PRINTABLE == (isset($_REQUEST[FORM_MODE]) ? $_REQUEST[FORM_MODE] : DEFAULT_FORM_MODE);
+    $bw = (isset($_REQUEST[FREE_BW]) ? $_REQUEST[FREE_BW] == true: DEFAULT_FREE_BW);
+    $page = (isset($_REQUEST[PAGE_SIZE]) ? $_REQUEST[PAGE_SIZE]: DEFAULT_PAGE_SIZE);
+    switch ($page) {
+        case PAGE_SIZE_LEGAL:
+            $pageWidth = LEGAL_PAGE_WIDTH;
+            $pageHeight = LEGAL_PAGE_HEIGHT;
+            break;
+        case PAGE_SIZE_TABLOID:
+            $pageWidth = TABLOID_PAGE_WIDTH;
+            $pageHeight = TABLOID_PAGE_HEIGHT;
+            break;
+        case PAGE_SIZE_LETTER:
+        default:
+            $pageWidth = LETTER_PAGE_WIDTH;
+            $pageHeight = LETTER_PAGE_HEIGHT;
+            break;
+    }
+    $header = (empty($_REQUEST['header']) ? DEFAULT_HEADER : $_REQUEST['header']);
+    $footer = (empty($_REQUEST['footer']) ? DEFAULT_FOOTER : $_REQUEST['footer']);
 
-    SATURDAY => array(
-        FREE . $i++ => array(
-            TITLE => '',
-            LOCATION => '',
-            START => strtotime('7:45am'),
-            END => strtotime('8:30am')
-        ),
-        X_BLOCK => array(
-            TITLE => '',
-            LOCATION => '',
-            START => strtotime('8:30am'),
-            END => strtotime('8:55am')
-        ),
-        FREE . $i++ => array(
-            TITLE => '',
-            LOCATION => '',
-            START => strtotime('8:55am'),
-            END => strtotime('9:00am')
-        ),
-        SM_SATURDAY => array(
-            TITLE => '',
-            LOCATION => '',
-            START => strtotime('9:00am'),
-            END => strtotime('11:30am')
-        ),
-        FREE . $i++ => array(
-            TITLE => '',
-            LOCATION => '',
-            START => strtotime('11:30am'),
-            END => strtotime('11:40am')
-        ),
-        ALL_SCHOOL => array(
-            TITLE => 'School Meeting',
-            LOCATION => '',
-            START => strtotime('11:40am'),
-            END => strtotime('12:00pm')
-        ),
-        FREE . $i++ => $LUNCH
-    )
-);
-
-/* minor fine-tuning */
-$schedule[MONDAY][ALL_SCHOOL][TITLE] = 'Seated Lunch';
-$schedule[MONDAY][ALL_SCHOOL][START] = strtotime('12:25pm');
-$schedule[TUESDAY][ALL_SCHOOL][TITLE] = 'Chapel';
-$schedule[THURSDAY][ALL_SCHOOL][TITLE] = 'Seated Lunch';
-$schedule[THURSDAY][ALL_SCHOOL][START] = strtotime('12:25pm');
-$schedule[FRIDAY][ALL_SCHOOL][TITLE] = 'Chapel';
-$schedule[FRIDAY][CO_CURRICULAR][START] = strtotime('12:55pm');
-
-/* set form parameters */
-$printable = FORM_MODE_PRINTABLE == (isset($_REQUEST[FORM_MODE]) ? $_REQUEST[FORM_MODE] : DEFAULT_FORM_MODE);
-$bw = (isset($_REQUEST[FREE_BW]) ? $_REQUEST[FREE_BW] == true: DEFAULT_FREE_BW);
-$page = (isset($_REQUEST[PAGE_SIZE]) ? $_REQUEST[PAGE_SIZE]: DEFAULT_PAGE_SIZE);
-switch ($page) {
-    case PAGE_SIZE_LEGAL:
-        $pageWidth = LEGAL_PAGE_WIDTH;
-        $pageHeight = LEGAL_PAGE_HEIGHT;
-        break;
-    case PAGE_SIZE_TABLOID:
-        $pageWidth = TABLOID_PAGE_WIDTH;
-        $pageHeight = TABLOID_PAGE_HEIGHT;
-        break;
-    case PAGE_SIZE_LETTER:
-    default:
-        $pageWidth = LETTER_PAGE_WIDTH;
-        $pageHeight = LETTER_PAGE_HEIGHT;
-        break;
-}
-$header = (empty($_REQUEST['header']) ? DEFAULT_HEADER : $_REQUEST['header']);
-$footer = (empty($_REQUEST['footer']) ? DEFAULT_FOOTER : $_REQUEST['footer']);
-
-/*
- * are we processing a form submission? let's apply color block classes across
- * the entire schedule uniformly...
- */
-foreach ($COLOR_ENUM as $color) {
-    if (!empty($_REQUEST[$color][TITLE])) {
-        foreach ($DAY_ENUM as $day) {
-            $blocks = array_keys($schedule[$day]);
-            foreach ($blocks as $block) {
-                if (preg_match("%$color\d*%", $block)) {
-                    if ($printable) {
-                        $schedule[$day][$block][TITLE] = $_REQUEST[$color][TITLE];
-                        if (!empty($_REQUEST[$color][LOCATION])) {
-                            $schedule[$day][$block][LOCATION] = $_REQUEST[$color][LOCATION];
+    /*
+     * are we processing a form submission? let's apply color block classes across
+     * the entire schedule uniformly...
+     */
+    foreach ($COLOR_ENUM as $color) {
+        if (!empty($_REQUEST[$color][TITLE])) {
+            foreach ($DAY_ENUM as $day) {
+                $blocks = array_keys($schedule[$day]);
+                foreach ($blocks as $block) {
+                    if (preg_match("%$color\d*%", $block)) {
+                        if ($printable) {
+                            $schedule[$day][$block][TITLE] = $_REQUEST[$color][TITLE];
+                            if (!empty($_REQUEST[$color][LOCATION])) {
+                                $schedule[$day][$block][LOCATION] = $_REQUEST[$color][LOCATION];
+                            }
+                        } else {
+                            $schedule[$day][$block][TITLE] = '';
+                            $schedule[$day][$block][LOCATION] = '';
                         }
-                    } else {
-                        $schedule[$day][$block][TITLE] = '';
-                        $schedule[$day][$block][LOCATION] = '';
                     }
                 }
             }
         }
     }
-}
 
-/* apply individual block settings */
-function compareStartTimes($a, $b)
-{
-    return $a[START] - $b[START];
-}
-$today = new DateTime();
-if (!empty($_REQUEST['schedule'])) {
-    foreach ($_REQUEST['schedule'] as $day => $blocks) {
-        foreach ($blocks as $color => $info) {
-            foreach ($info as $key => $value) {
-                if (!empty($value)) {
-                    if ($key == START || $key == END) {
-                        if (!preg_match('/^\d+$/', $value)) {
-                            $value = strtotime($value);
+    /* apply individual block settings */
+    function compareStartTimes($a, $b)
+    {
+        return $a[START] - $b[START];
+    }
+    $today = new DateTime();
+    if (!empty($_REQUEST['schedule'])) {
+        foreach ($_REQUEST['schedule'] as $day => $blocks) {
+            foreach ($blocks as $color => $info) {
+                foreach ($info as $key => $value) {
+                    if (!empty($value)) {
+                        if ($key == START || $key == END) {
+                            if (!preg_match('/^\d+$/', $value)) {
+                                $value = strtotime($value);
+                            }
+                            $value = strtotime($today->format('Y-m-d ') . date('H:i:s', $value));
                         }
-                        $value = strtotime($today->format('Y-m-d ') . date('H:i:s', $value));
+                        $schedule[$day][$color][$key] = $value;
                     }
-                    $schedule[$day][$color][$key] = $value;
                 }
             }
+            uasort($schedule[$day], "compareStartTimes");
         }
-        uasort($schedule[$day], "compareStartTimes");
     }
-}
 
 
-$minuteHeight = setMinuteHeight($schedule, $pageHeight);
+    $minuteHeight = setMinuteHeight($schedule, $pageHeight);
 
-$key = getUniqueId();
-$vars = get_defined_vars();
-unset($vars['sql']);
-unset($vars['cache']);
-unset($vars['cache']);
-unset($vars['smarty']);
-$cache->setCache($key, $vars, HierarchicalSimpleCache::IMMORTAL_LIFETIME);
-
+    $key = getUniqueId();
+    $vars = get_defined_vars();
+    unset($vars['sql']);
+    unset($vars['cache']);
+    unset($vars['cache']);
+    unset($vars['smarty']);
+    $cache->setCache($key, $vars, HierarchicalSimpleCache::IMMORTAL_LIFETIME);
+    header("Location: {$_SERVER['PHP_SELF']}?cache=$key");
+    exit;
 }
 
 ?>
@@ -829,7 +829,7 @@ $cache->setCache($key, $vars, HierarchicalSimpleCache::IMMORTAL_LIFETIME);
             <div id="controls">
                 <div class="section">
                     <button type="submit" name="<?= FORM_MODE ?>" value="<?= ($printable ? FORM_MODE_EDITABLE : FORM_MODE_PRINTABLE) ?>"><?= ucwords($printable ? FORM_MODE_EDITABLE : FORM_MODE_PRINTABLE) ?></button>
-                <?php if (!$printable): ?>
+                <?php if (!$printable) : ?>
                     <button type="button" onclick="window.location.href=window.location.href;">Reset</button>
                 </div>
                 <div class="section">
@@ -841,7 +841,7 @@ $cache->setCache($key, $vars, HierarchicalSimpleCache::IMMORTAL_LIFETIME);
                     <label for="<?= PAGE_SIZE_LEGAL ?>"><input type="radio" id="<?= PAGE_SIZE_LEGAL ?>" name="<?= PAGE_SIZE ?>" value="<?= PAGE_SIZE_LEGAL ?>" <?= ($page == PAGE_SIZE_LEGAL ? 'checked' : '') ?> /> <?= ucwords(PAGE_SIZE_LEGAL) ?></label>
                     <label for="<?= PAGE_SIZE_TABLOID ?>"><input type="radio" id="<?= PAGE_SIZE_TABLOID ?>" name="<?= PAGE_SIZE ?>" value="<?= PAGE_SIZE_TABLOID ?>" <?= ($page == PAGE_SIZE_TABLOID ? 'checked' : '') ?> /> <?= ucwords(PAGE_SIZE_TABLOID) ?></label>
                 </div>
-                <?php else: ?>
+                <?php else : ?>
                 <button  type="button" onclick="window.print();"><?= ucwords(FORM_MODE_PRINTABLE) ?></button>
                 <input type="hidden" name="<?= FREE_BW ?>" value="<?= ($bw ? 1 : 0) ?>" />
                 <input type="hidden" name="<?= PAGE_SIZE ?>" value="<?= $page ?>" />
@@ -852,11 +852,11 @@ $cache->setCache($key, $vars, HierarchicalSimpleCache::IMMORTAL_LIFETIME);
                 <?php endif; ?>
             </div>
 
-            <?php if (!$printable): ?>
+            <?php if (!$printable) : ?>
             <div id="courses">
                 <h2>Enter courses by color</h2>
                 <ul>
-                    <?php foreach($COLOR_ENUM as $color): ?>
+                    <?php foreach ($COLOR_ENUM as $color) : ?>
                     <li class="<?= $color ?> free block" id="<?= $color ?>">
                         <span class="title">
                             <input name="<?= $color ?>[<?= TITLE ?>]" id="<?= $color ?>-title" type="text" placeholder="<?= ucwords($color) ?> Course" value="<?= $_REQUEST[$color][TITLE] ?>" onblur="toggleFreeBusy('<?= $color ?>');" onload="toggleFreeBusy('<?= $color ?>');" />
@@ -867,26 +867,32 @@ $cache->setCache($key, $vars, HierarchicalSimpleCache::IMMORTAL_LIFETIME);
                 </ul>
                 <br clear="all" />
             </div>
-            <?php else: ?>
-                <?php foreach ($COLOR_ENUM as $color) {
+            <?php else : ?>
+                <?php
+
+                foreach ($COLOR_ENUM as $color) {
                     if (!empty($_REQUEST[$color][TITLE])) {
                         ?><input type="hidden" name="<?= $color ?>[<?= TITLE ?>]" value="<?= $_REQUEST[$color][TITLE] ?>" /><?php
                     }
                     if (!empty($_REQUEST[$color][LOCATION])) {
                         ?><input type="hidden" name="<?= $color ?>[<?= LOCATION ?>]" value="<?= $_REQUEST[$color][LOCATION] ?>" /><?php
                     }
-                } ?>
+                }
+
+                ?>
             <?php endif;?>
 
             <div id="wrapper">
 
-                <?php if (!$printable): ?><h2>Enter a title</h2><?php endif; ?>
+                <?php if (!$printable) : ?>
+                    <h2>Enter a title</h2>
+                <?php endif; ?>
 
                 <header id="header">
                     <h1><?php if ($printable): ?>
                             <?= $_REQUEST['header'] ?>
                             <input type="hidden" name="header" value="<?= $_REQUEST['header'] ?>" />
-                        <?php else: ?>
+                        <?php else : ?>
                             <input type="text" name="header" value="<?= $header ?>" />
                         <?php endif; ?>
                     </h1>
@@ -894,30 +900,32 @@ $cache->setCache($key, $vars, HierarchicalSimpleCache::IMMORTAL_LIFETIME);
 
                 <div id="content">
 
-                    <?php if (!$printable): ?><h2>Enter individual blocks</h2><?php endif; ?>
+                    <?php if (!$printable) : ?>
+                        <h2>Enter individual blocks</h2>
+                    <?php endif; ?>
 
                     <table id="schedule">
                         <tr>
 
-                            <?php foreach ($schedule as $day => $blocks): ?>
+                            <?php foreach ($schedule as $day => $blocks) : ?>
                             <td id="<?= $day ?>" class="day">
                                 <table>
                                     <tr>
                                         <th><?= ucwords($day) ?></th>
                                     </tr>
 
-                                    <?php foreach ($blocks as $color => $info): ?>
+                                    <?php foreach ($blocks as $color => $info) : ?>
                                     <tr>
-                                        <?php if (preg_match('%' . SPACER . '\d*%', $color)): ?>
+                                        <?php if (preg_match('%' . SPACER . '\d*%', $color)) : ?>
                                         <td class="<?= SPACER ?> block">
                                             <input type="hidden" name="schedule[<?= $day ?>][<?= $color ?>]" value="<?= SPACER ?>" />
                                         </td>
-                                        <?php else: ?>
+                                        <?php else : ?>
                                         <td>
                                             <div class="<?= preg_replace('%\d+%', '', $color) ?> <?= (empty($info[TITLE]) ? 'free' : 'busy') ?> <?= ($bw && !preg_match('%' . FREE . '\d*%', $color) ? FREE_BW : '') ?> block dur<?= $info[END] - $info[START] + (!$printable && !preg_match('%' . FREE . '\d*%', $color) ? 20 * 60 : 0) ?>" id="<?= "$day-$color" ?>">
                                                 <p class="duration">
-                                                    <?php if (preg_match('%' . FREE .'\d*%', $color)): ?>
-                                                    <?php else: ?>
+                                                    <?php if (preg_match('%' . FREE .'\d*%', $color)) : ?>
+                                                    <?php else : ?>
                                                         <?= date(TIME_FORMAT, $info[START]) ?> &ndash; <?= date(TIME_FORMAT, $info[END]) ?>
                                                     <?php endif; ?>
                                                     <input type="hidden" name="schedule[<?= $day ?>][<?= $color ?>][<?= START ?>]" value="<?= $info[START] ?>" />
@@ -926,28 +934,28 @@ $cache->setCache($key, $vars, HierarchicalSimpleCache::IMMORTAL_LIFETIME);
 
                                                 <div class="details">
                                                     <p class="title">
-                                                        <?php if ($printable): ?>
+                                                        <?php if ($printable) : ?>
                                                             <?= $info[TITLE] ?>
                                                             <input type="hidden" name="schedule[<?= $day ?>][<?= $color ?>][<?= TITLE ?>]" value="<?= $_REQUEST['schedule'][$day][$color][TITLE] ?>" />
-                                                        <?php else: ?>
-                                                            <?php if (preg_match('%' . FREE . '\d*%', $color)): ?>
+                                                        <?php else : ?>
+                                                            <?php if (preg_match('%' . FREE . '\d*%', $color)) : ?>
                                                                 <input type="hidden" name="schedule[<?= $day ?>][<?= $color ?>][<?= TITLE ?>]" value="<?= $info[TITLE] ?>" />
-                                                            <?php else: ?>
+                                                            <?php else : ?>
                                                                 <input type="text" name="schedule[<?= $day ?>][<?= $color ?>][<?= TITLE ?>]" id="<?= "$day-$color" ?>-title" value="<?= $info[TITLE] ?>" placeholder="<?= (preg_match('%' . X_BLOCK . '\d*%', $color) || $color == SM_SATURDAY ? ($color == SM_SATURDAY ? SM_SATURDAY_TITLE : ucwords($day . ' ' . X_BLOCK_TITLE)) : ucwords($day . ' ' . ucwords(preg_replace('%\d+%', '', $color)))) ?>" onblur="toggleFreeBusy('<?= "$day-$color" ?>');" onload="toggleFreeBusy('<?= "$day-$color" ?>');" />
                                                             <?php endif; ?>
                                                         <?php endif; ?>
                                                     </p>
-                                                    <?php if ($printable): ?>
-                                                        <?php if (!empty($info[LOCATION])): ?>
+                                                    <?php if ($printable) : ?>
+                                                        <?php if (!empty($info[LOCATION])) : ?>
                                                             <p class="location">
                                                                 <?= $info[LOCATION] ?>
                                                                 <input type="hidden" name="schedule[<?= $day ?>][<?= $color ?>][<?= LOCATION ?>]" value="<?= $_REQUEST['schedule'][$day][$color][LOCATION] ?>" />
                                                             </p>
                                                         <?php endif; ?>
-                                                    <?php else: ?>
+                                                    <?php else : ?>
                                                         <p class="location">
-                                                            <?php if (preg_match('%' . FREE . '\d*%', $color)): ?>
-                                                            <?php else: ?>
+                                                            <?php if (preg_match('%' . FREE . '\d*%', $color)) : ?>
+                                                            <?php else : ?>
                                                                 <input type="text" name="schedule[<?= $day ?>][<?= $color ?>][<?= LOCATION ?>]" value="<?= $info[LOCATION] ?>" placeholder="Location" />
                                                             <?php endif; ?>
                                                         </p>
@@ -971,17 +979,19 @@ $cache->setCache($key, $vars, HierarchicalSimpleCache::IMMORTAL_LIFETIME);
                 $shortlink = DataUtilities::URLfromPath(__FILE__) . '?cache=' . $key;
                 echo $shortlink;
 
-                 ?>"><?= $shortlink ?></a></div>
+                ?>"><?= $shortlink ?></a></div>
 
                 </div>
 
-                <?php if (!$printable): ?><h2>Enter a note for the bottom of the schedule</h2><?php endif; ?>
+                <?php if (!$printable) : ?>
+                    <h2>Enter a note for the bottom of the schedule</h2>
+                <?php endif; ?>
 
                 <footer id="footer">
-                    <p><?php if ($printable): ?>
+                    <p><?php if ($printable) : ?>
                             <?= $_REQUEST['footer'] ?>
                             <input type="hidden" name="footer" value="<?= $_REQUEST['footer'] ?>" />
-                        <?php else: ?>
+                        <?php else : ?>
                             <textarea type="text" name="footer"><?= $footer ?></textarea>
                         <?php endif; ?>
                     </p>
