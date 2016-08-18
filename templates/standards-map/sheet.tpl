@@ -1,13 +1,13 @@
 <html>
 	<head>
-		<link rel="stylesheet" href="stylesheets/standards-map/sheet.css" />
+		<link rel="stylesheet" href="css/standards-map/sheet.css" />
 	</head>
 	<body>
 		<div id="wrapper">
 			<div id="content">
-				
+
 				<h1>{$title}</h1>
-				
+
 				<table>
 					<thead>
 						<tr class="courses">

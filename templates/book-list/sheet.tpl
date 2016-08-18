@@ -1,11 +1,11 @@
 <html>
 	<head>
 		<title>Book Lists</title>
-		<link rel="stylesheet" href="stylesheets/book-list.css" />
+		<link rel="stylesheet" href="css/book-list.css" />
 	</head>
 	<body>
 		<div id="wrapper">
-		
+
 		{foreach $sections as $s}
 			<div class="section">
 				<div class="page page-1">
@@ -16,7 +16,7 @@
 						<div class="count books">{count($s['books'])} book{if count($s['books']) > 1}s{/if}</div>
 						<div class="count students">{count($s['students'])} student{if count($s['students'])}s{/if}</div>
 					</div><!-- metadata -->
-					
+
 					<table class="book-list">
 						<thead>
 							<tr class="books">
@@ -59,7 +59,7 @@
 							</tr>
 						</tfoot>
 					</table><!-- book-list-->
-	
+
 					<table class="initials">
 						<caption>Initials</caption>
 						<tbody>
@@ -74,21 +74,21 @@
 						</tbody>
 					</table><!-- initials -->
 				</div><!-- page-1 -->
-	
+
 				<div class="page page-2">
 					<div class="instructions">
-		
+
 						<h3>Instructions for Students</h3>
-		
+
 						<ul>
 							<li>Please initial under the column of each book or supply received in your row.</li>
 							<li>If you later need to return your book or supply, please return it directly to the Book Store.</li>
 							<li>The Book Store can only accept unmarked books and supplies. If you think that you may drop this class, please do not put your name on anything... yet.</li>
 							<li>If you have been added to this class after books and supplies have been distributed, you may purchase them directly from the Book Store.</li>
 						</ul>
-						
+
 						<h3>Instructions for Teachers</h3>
-		
+
 						<ul>
 							<li>Upon receiving your books and supplies from your department chair, count to be sure that the number you have been issued matches the number listed on your sheet in the "Issued to Teacher" row.</li>
 							<li>On the first day of class:
@@ -103,9 +103,9 @@
 							<li>Students who drop your class must return their unused, unmarked books and supplies directly to the Book Store.</li>
 							<li>Students who add your class must purchase necessary books and supplies directly from the Book Store.</li>
 						</ul>
-		
+
 						<h3>Instructions for Department Chairs</h3>
-		
+
 						<ul>
 							<li>Upon receiving books and supplies from the Book Store
 								<ol>
@@ -127,9 +127,9 @@
 					</div><!-- instructions -->
 				</div><!-- page-2 -->
 			</div><!-- section -->
-						
+
 		{/foreach}
-		
+
 		</div><!-- wrapper -->
 	</body>
 </html>
