@@ -1,8 +1,9 @@
 <?php
 
-require_once('common.inc.php');
+require_once 'common.inc.php';
 
 use Battis\DataUtilities;
+use smtech\StMarksSmarty\StMarksSmarty;
 
 $smarty->enable(StMarksSmarty::MODULE_DATEPICKER);
 

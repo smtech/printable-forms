@@ -1,6 +1,9 @@
 <?php
 
-require_once('common.inc.php');
+require_once 'common.inc.php';
+
+use Battis\SimpleCache;
+use smtech\StMarksSmarty\StMarksSmarty;
 
 $smarty->assign('name', 'Generate Standards Map');
 $smarty->assign('category', 'CurricUplan');
