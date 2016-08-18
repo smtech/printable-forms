@@ -8,12 +8,13 @@
             "email": "sethbattis@stmarksschool.org"
         }
     ],
-    "minimum-stability": "dev",
     "require": {
-	    "smtech/stmarks-colors": "dev-master",
-	    "smtech/stmarkssmarty": "dev-master",
+	    "smtech/stmarks-colors": "~1.0",
+	    "smtech/stmarkssmarty": "~1.0",
 	    "battis/simplecache": "~1.0",
-	    "battis/data-utilities": "dev-master",
+	    "battis/data-utilities": "~0.1",
+        "battis/configxml": "~1.0",
 	    "ext-tidy": "~2.0"
-    }
+    },
+    "minimum-stability": "stable"
 }

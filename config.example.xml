@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<config>
+	<mysql>
+		<host>localhost</host>
+		<username>printable-forms</username>
+		<password>s00p3r53kr37</password>
+		<database>printable-forms</database>
+	</mysql>
+</config>
