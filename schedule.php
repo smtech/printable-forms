@@ -6,6 +6,8 @@ use smtech\StMarksColors as col;
 use Battis\HierarchicalSimpleCache;
 use Battis\DataUtilities;
 
+error_reporting(0); // FIXME bad!
+
 /* days */
 define('MONDAY', 'monday');
 define('TUESDAY', 'tuesday');
