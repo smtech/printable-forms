@@ -82,7 +82,7 @@
 
 						<ul>
 							<li>Please initial under the column of each book or supply received in your row.</li>
-							<li>If you later need to return your book or supply, please return it directly to the Book Store.</li>
+							<li>If you later need to return your book or supply, please return it directly to the Book Store. <strong>Important:</strong> in courses using e-books with activation codes, as soon as the activation code is used, you "own" that book.</li>
 							<li>The Book Store can only accept unmarked books and supplies. If you think that you may drop this class, please do not put your name on anything... yet.</li>
 							<li>If you have been added to this class after books and supplies have been distributed, you may purchase them directly from the Book Store.</li>
 						</ul>
@@ -100,7 +100,7 @@
 									<li>Return this sheet (with all extra books and supplies) to your department chair before the end of the day on <strong>{$teacherDeadline}</strong>.</li>
 								</ol>
 							</li>
-							<li>Students who drop your class must return their unused, unmarked books and supplies directly to the Book Store.</li>
+							<li>Students who drop your class must return their unused, unmarked books and supplies directly to the Book Store. <strong>Important:</strong> in courses using e-books with activation codes, as soon as the activation code is used, the student "owns" the book.</li>
 							<li>Students who add your class must purchase necessary books and supplies directly from the Book Store.</li>
 						</ul>
 
