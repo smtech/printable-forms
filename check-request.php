@@ -22,6 +22,7 @@
     <title><?= $today ?> Check Request<?php if (isset($_REQUEST['payTo'])) { $name = explode(' ', $_REQUEST['payTo']); echo ' (' . array_pop($name) . ')'; } ?></title>
     <style>
         @page {
+            size: 11in 8.5in;
             size: landscape;
             margin: 0;
         }
