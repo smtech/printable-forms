@@ -5,7 +5,7 @@
     <div class="container readable-width">
         <p>Your embed code is:</p>
         <p>
-            <textarea class="form-control" id="embed" style="font-family: monospace;" rows="5"><iframe id="remind101-widget-0" class="remind101-messages" style="border: 0;" title="Remind messages" src="https://widgets.remind.com/widget?height=500&amp;join=true&amp;token={$token}" width="100%" height="500px"></iframe></textarea>
+            <textarea class="form-control" id="embed" style="font-family: monospace;" rows="5"><iframe id="remind101-widget-0" class="remind101-messages" style="border: 0;" title="Remind messages" src="https://widgets.remind.com/widget?height={$height}&amp;join={$join}&amp;token={$token}" width="100%" height="{$height}px"></iframe></textarea>
         <p>
         <button class="btn btn-primary" type="button" onclick="$(embed).select(); document.execCommand('copy');">Copy Embed Code</button>
     </div>
